@@ -11,6 +11,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error,r2_score
 import numpy as np
 from sklearn.preprocessing import PolynomialFeatures
+from sklearn.cluster import KMeans
 
 import matplotlib.pyplot as plt
 from streamlit.elements import selectbox
@@ -21,12 +22,6 @@ st.image(image4, width=3000,use_column_width='auto')
 #st.image(image, caption='Sunrise by the mountains')
 
 
-options = st.multiselect(
-    'Bienvenido escoja la opcion que desea ',
-        ['Inicio', 'Tendencia de Covid por pais'])
-
-
-st.write('You selected:', options)
 
 
 video_file = open('efe.mp4', 'rb')
@@ -34,7 +29,7 @@ video_bytes = video_file.read()
 
 
 
-def Inicio(icon="☄️"):
+def Inicio():
 
     st.video(video_bytes,start_time=1)
     st.markdown( '####  CORONAVIRUS DATA ANALYSIS WITH MACHINE LEARNING es una aplicación desarollada con el unico  proposito de analizar a detalle   el virus COVID-19'  )
@@ -1082,9 +1077,129 @@ def Analisis_Comparativo_entre2_pais_contienente():
         st.bar_chart(grafica)
 
 
-def app8():
-    st.info('Hello from app 3')
+def Tasa_Mortalidad_Pais():
+    image33 = Image.open('tasa_muerte_covid.png')
 
+    st.image(image33, width=1200,use_column_width='auto')
+
+    uploaded_file = st.file_uploader("Para realizar    analisis el archivo  escoja un archivo de preferencia CSV")
+    if uploaded_file is not None:
+    # To read file as bytes:
+        bytes_data = uploaded_file.getvalue()
+
+
+    # To convert to a string based IO:
+        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
+
+    # To read file as string:
+        string_data = stringio.read()
+
+    # Can be used wherever a "file-like" object is accepted:
+        dataframe = pd.read_csv(uploaded_file)
+        st.write(dataframe)
+
+        st.info("escoja Los campos que considere nescesarios para realizar la tasa de muertes por COVID-19")
+        var = st.selectbox(
+        'Seleccione el campo Country o pais ',
+        (dataframe.columns))
+        opcion1=var.upper()
+        st.write(opcion1)
+        st.write(dataframe[var])
+
+        var1 = st.selectbox(
+        'Seleccione el campo casos   ',
+        (dataframe.columns))
+        opcion2=var1.upper()
+        st.write(opcion2)
+        st.write(dataframe[var1])
+
+        var2 = st.selectbox(
+        'Seleccione el campo muertes  o death ',
+        (dataframe.columns))
+        opcion3=var2.upper()
+        st.write(opcion3)
+        st.write(dataframe[var2])
+        st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar la tasa de mortalidad por covid-19")
+        pais_v = st.text_input('',placeholder='Escriba al pais al que quiere realizar el analisis')
+        pais_Escogido_v=[pais_v]
+        st.markdown('# Pais escogido:'+pais_v)
+        casos_pais_v=dataframe[dataframe[var].isin(pais_Escogido_v)]
+
+        casos_al_Dia=casos_pais_v[var1].sum()
+        muertes_al_Dia=casos_pais_v[var2].sum()
+        st.markdown('## Casos por COVID 19 en el  PAIS '+pais_v)
+        st.write(casos_al_Dia)
+        st.markdown('## Muertes por COVID 19 en el  PAIS '+pais_v)
+        st.write(muertes_al_Dia)
+        tasa=muertes_al_Dia/casos_al_Dia
+        st.write(tasa*100)
+        st.info('Segun los datos obtenidos durante el analisis se obtuvo que el numero de casos de COVID-19 en el pais '+pais_v+'asciende a la cifra de '+str(casos_al_Dia)+' y lastimosamente la cifra de fallecidos asciende a la cantidad de '+ str(muertes_al_Dia)+' y para calcular la tasa de mortalidad se hace uso de la fórmula de Tasa de Mortalidad por Infección (IFR) = Muertes / Casos  que en este caso   seria: '+str(round(tasa*100,2))+'%')
+
+        tamanio=casos_pais_v[var1].__len__()
+        arreglo=[]
+        for i in range (0,tamanio):
+            arreglo.append(i)
+
+
+
+
+
+
+        X=np.asarray(arreglo).reshape(-1,1)
+
+
+        Y=casos_pais_v[var1]
+        st.set_option('deprecation.showPyplotGlobalUse', False)
+        reg = LinearRegression()
+        reg.fit(X, Y)
+        prediction_space = np.linspace(min(X), max(X)).reshape(-1, 1)
+        plt.scatter(X, Y, color='cyan')
+        plt.title("TENDENCIA DE CASOS DEL ESTADO:"+pais_v)
+        plt.ylabel('CASOS_COVID')
+        plt.xlabel('#')
+        plt.plot(prediction_space, reg.predict(prediction_space))
+        plt.show()
+        st.pyplot()
+        st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
+        st.info(reg.coef_)
+        if reg.coef_ < 0:
+            st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  los casos de covid 19 han ido disminuyendo considerablemente en este Estado  ')
+        else:
+            st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   los casos en este pais  han ido aumentando considerablemente  en este Estado alo largo de los ultimos reportes ')
+
+
+
+        tamanio2=casos_pais_v[var2].__len__()
+        arreglo2=[]
+        for i in range (0,tamanio2):
+            arreglo2.append(i)
+
+
+
+
+
+
+        X=np.asarray(arreglo2).reshape(-1,1)
+
+
+        Y=casos_pais_v[var2]
+        st.set_option('deprecation.showPyplotGlobalUse', False)
+        reg = LinearRegression()
+        reg.fit(X, Y)
+        prediction_space = np.linspace(min(X), max(X)).reshape(-1, 1)
+        plt.scatter(X, Y, color='cyan')
+        plt.title("TENDENCIA DE MUERTE DEL ESTADO:"+pais_v)
+        plt.ylabel('MUERTE POR COVID-19')
+        plt.xlabel('#')
+        plt.plot(prediction_space, reg.predict(prediction_space))
+        plt.show()
+        st.pyplot()
+        st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
+        st.info(reg.coef_)
+        if reg.coef_ < 0:
+            st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  los casos de covid 19 han ido disminuyendo considerablemente en este Estado  ')
+        else:
+            st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   los casos en este pais  han ido aumentando considerablemente  en este Estado alo largo de los ultimos reportes ')
 
 def Comparacion_Infectados_Vacunados_Pais():
 
@@ -1158,6 +1273,78 @@ def Comparacion_Infectados_Vacunados_Pais():
 
         st.bar_chart(grafica)
 
+def Muertes_por_Region():
+    image12 = Image.open('muertes_region.png')
+
+    st.image(image12, width=1200,use_column_width='auto')
+
+    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+    if uploaded_file is not None:
+    # To read file as bytes:
+        bytes_data = uploaded_file.getvalue()
+
+
+    # To convert to a string based IO:
+        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
+
+    # To read file as string:
+        string_data = stringio.read()
+
+    # Can be used wherever a "file-like" object is accepted:
+        dataframe = pd.read_csv(uploaded_file)
+        st.write(dataframe)
+
+        st.info("escoja Los campos que considere nescesarios para realizar la Comparacion de Vacunacion entre 2 paises ")
+        var = st.selectbox(
+        'Seleccione el campo Country o pais ',
+        (dataframe.columns))
+        opcion1=var.upper()
+        st.write(opcion1)
+        st.write(dataframe[var])
+        var1 = st.selectbox(
+        'Seleccione el campo estado  o departamento ',
+        (dataframe.columns))
+        opcion2=var1.upper()
+        st.write(opcion2)
+        st.write(dataframe[var1])
+        var2 = st.selectbox(
+        'Seleccione el campo muertes  o death ',
+        (dataframe.columns))
+        opcion2=var2.upper()
+        st.write(opcion2)
+        st.write(dataframe[var2])
+        st.info(" si escogio los campos correctamente  proceda a escoger el pais  analizar las regiones")
+        pais = st.text_input('',placeholder='Escriba al pais al que quiere realizar el analisis')
+
+        pais_Escogido=[pais]
+        st.markdown('# Pais escogido:'+pais)
+
+        casos_pais=dataframe[dataframe[var].isin(pais_Escogido)]
+        df=pd.DataFrame({"regiones":casos_pais[var1].drop_duplicates(),
+                "muertes":casos_pais[var2],
+                })
+
+
+        cont=0
+        regiones=[]
+        muertesAR=[]
+
+        for i in df.itertuples():
+
+
+            if i.regiones != 'nan':
+                alv=[i.regiones]
+                regiones.append(i.regiones)
+
+
+                alv2=dataframe[dataframe[var1].isin(alv)]
+                muertes=alv2[var2].sum()
+                muertesAR.append(muertes)
+
+
+        Muertes_REGION=pd.DataFrame({"regiones":regiones,
+                "muertes":muertesAR,
+                })
 
 
 
@@ -1166,10 +1353,97 @@ def Comparacion_Infectados_Vacunados_Pais():
 
 
 
-if options[0] =='Inicio':
-    Inicio()
-elif options[0] =='Tendencia de Covid por pais':
-    Tendencia_Covid_Pais()
 
 
 
+        st.table(Muertes_REGION)
+        tamanio=casos_pais[var1].__len__()
+
+        arreglo=[]
+        for i in range (0,tamanio):
+            arreglo.append(i)
+        X=np.asarray(arreglo).reshape(-1,1)
+        Y=Muertes_REGION.muertes
+        st.set_option('deprecation.showPyplotGlobalUse', False)
+        #reg = LinearRegression()
+        #reg.fit(X, Y)
+
+        prediction_space = np.linspace(min(X), max(X)).reshape(-1, 1)
+        plt.scatter(X[:,0], Y, color='blue',cmap='rainbow')
+
+        plt.title("Muertes por regiones del PAIS:"+pais)
+        plt.ylabel('Numero de muertes  en el  '+pais)
+        plt.xlabel('#REGIONES')
+        #plt.plot(prediction_space, reg.predict(prediction_space))
+        plt.show()
+        st.pyplot()
+
+        #st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
+        # st.info(reg.coef_)
+        #  if reg.coef_ < 0:
+        #    st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+pais+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   ')
+        #else:
+        #    st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion')
+
+
+
+
+
+
+op = st.multiselect(
+    'Bienvenido escoja la opcion que desea ',
+        ['Inicio☄️', 'Tendencia de Covid por pais📈','Predicción de Infertados en un País🧮','Predicción de mortalidad por COVID en un Departamento🧮','Análisis del número de muertes por coronavirus en un País☠️'
+            ,'Tendencia de la vacunación de en un País💉📈','Tendencia de casos confirmados de Coronavirus en un departamento de un País📈'
+        ,'Predicción de mortalidad por COVID en un Pais🧮','Ánalisis Comparativo entres 2 o más paises o continentes🌎','Ánalisis Comparativo de Vacunación entre 2 paises💉'
+        ,'Muertes según regiones de un país - Covid 19☠️','Tasa de mortalidad por coronavirus (COVID-19) en un país📈☠️'])
+
+
+st.write('You selected:', op)
+
+
+
+
+
+if len(op)>0:
+    if op[0] =='Inicio☄️':
+        Inicio()
+    elif op[0] =='Tendencia de Covid por pais📈':
+        Tendencia_Covid_Pais()
+    elif op[0] =='Predicción de Infectados en un País🧮':
+        Prediccion_Infectados_Pais()
+    elif op[0]=='Predicción de mortalidad por COVID en un Departamento🧮':
+        Prediccion_Muertes_Departamento()
+    elif op[0]=='Predicción de mortalidad por COVID en un Pais🧮':
+        Prediccion_Muertes_Pais()
+
+    elif op[0]=='Análisis del número de muertes por no en un País☠️':
+        Analisis_Muertes_por_Pais()
+
+    elif op[0]=='Tendencia de la vacunación de en un País💉📈':
+        Tendencia_Vacunancion_Pais()
+    elif op[0]=='Ánalisis Comparativo de Vacunación entre 2 paises💉':
+        Comparacion_Vacunacion_Pais()
+
+
+    elif op[0]=='Tendencia de casos confirmados de Coronavirus en un departamento de un País📈':
+        Tendencia_casos_Departamento()
+
+    elif op[0]=='Ánalisis Comparativo entres 2 o más paises o continentes🌎':
+        Analisis_Comparativo_entre2_pais_contienente()
+
+    elif op[0]=='Muertes según regiones de un país - Covid 19☠️':
+        Muertes_por_Region()
+
+    elif op[0]=='Tasa de mortalidad por coronavirus (COVID-19) en un país📈☠️':
+        Tasa_Mortalidad_Pais()
+    elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
+        Analisis_Muertes_por_Pais()
+    elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
+        Analisis_Muertes_por_Pais()
+    elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
+        Analisis_Muertes_por_Pais()
+    elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
+        Analisis_Muertes_por_Pais()
+
+
+#Tasa de mortalidad por coronavirus (COVID-19) en un país.
