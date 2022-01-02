@@ -695,6 +695,8 @@ def Prediccion_Muertes_dia():
 
 
 
+
+
         X=np.asarray(arreglo)
         Y=np.asarray(muertes)
 
@@ -712,10 +714,12 @@ def Prediccion_Muertes_dia():
         rmse=np.sqrt(mean_squared_error(Y,Y_NEW))
 
         r2=r2_score(Y,Y_NEW)
-        x_new_main=0.0
-        x__new_max=50.0
+        x_new_main=0
+        x__new_max=400
 
-        X_NEW=np.linspace(x_new_main,x__new_max,50)
+
+
+        X_NEW=np.linspace(x_new_main,x__new_max,200)
 
         X_NEW=X_NEW[:,np.newaxis]
         X_NEW_TRANSF =polynomial_features.fit_transform(X_NEW)
@@ -725,7 +729,7 @@ def Prediccion_Muertes_dia():
         plt.plot(X_NEW,Y_NEW,color='red',linewidth=4)
         plt.grid()
         plt.xlim(x_new_main,x__new_max)
-        plt.ylim(0,1000)
+        plt.ylim(0,2500)
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
         plt.title("Prediccion de Muertes por Covid en el pais "+pais+title)
         plt.xlabel('#dias')
@@ -1362,6 +1366,41 @@ def Comparacion_Infectados_Vacunados_Pais():
 
         casos_pais=dataframe[dataframe[var].isin(pais_Escogido)]
         #st.write(casos_pais[var],casos_pais[var1],casos_pais[var3])
+
+        df=pd.DataFrame({"casos":casos_pais[var1].drop_duplicates(),
+        "pruebas":casos_pais[var3],
+                })
+        input_data = []
+
+        for item in df.itertuples():
+        #new tests
+
+            if pd.isnull(item.casos)==False:
+                input_data.append([item.casos, item.pruebas])
+
+
+
+        st.write(input_data)
+        st.set_option('deprecation.showPyplotGlobalUse', False)
+        X = np.array(input_data)
+        kmeans = KMeans(n_clusters=3)
+        kmeans.fit(X)
+
+        plt.scatter(X[:,0],X[:,1], c=kmeans.labels_, cmap='rainbow')
+        plt.title("Compracion entre  el numero de casos detectados y el numero de pruebas del pais :"+pais)
+        plt.ylabel('pruebas de COVID-19 ')
+        plt.xlabel('Numero de contagios  de COVID-19')
+#comment this line to get only the points
+        plt.scatter(kmeans.cluster_centers_[:,0], kmeans.cluster_centers_[:,1], color='black')
+
+        plt.show()
+        st.pyplot()
+        st.info('Para este analisis se ha decidido dividir  los datos en 3 regiones   para mostrar de una mejor manera los datos  la region 1 es de color morado , la region 2 es colorrojo y la region 3 es de color cyan esto se hizo para observar de una mejor manera la comparacion entre los casos de covid 19 y las puebtas que ha realizao este pais ')
+
+
+
+
+
         casos_confirmados_pais=casos_pais[var1].sum()
 
 
@@ -1637,14 +1676,15 @@ op = st.multiselect(
             ,'Tendencia de la vacunación de en un País💉📈','Tendencia de casos confirmados de Coronavirus en un departamento de un País📈'
         ,'Predicción de mortalidad por COVID en un Pais🧮','Ánalisis Comparativo entres 2 o más paises o continentes🌎','Ánalisis Comparativo de Vacunación entre 2 paises💉'
         ,'Muertes según regiones de un país - Covid 19☠️','Tasa de mortalidad por coronavirus (COVID-19) en un país📈☠️'
-        ,'Predicción de casos confirmados por día🧮☠️','Tendencia del número de infectados por día de un País.🗓️📈'])
+        ,'Predicción de casos confirmados por día🧮☠️','Tendencia del número de infectados por día de un País.🗓️📈',
+        'Comparación entre el número de casos detectados y el número de pruebas de un país 💊💉'])
 
 
 st.write('You selected:', op)
 
 
 
-
+#Tasa de comportamiento de casos activos en relación al número de muertes en un continente.
 
 if len(op)>0:
     if op[0] =='Inicio☄️':
@@ -1680,8 +1720,8 @@ if len(op)>0:
         Prediccion_Muertes_dia()
     elif op[0]=='Tendencia del número de infectados por día de un País.🗓️📈':
         Tendencia_Infectados_dia()
-    elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
-        Analisis_Muertes_por_Pais()
+    elif op[0]=='Comparación entre el número de casos detectados y el número de pruebas de un país 💊💉':
+        Comparacion_Infectados_Vacunados_Pais()
     elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
         Analisis_Muertes_por_Pais()
     elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
