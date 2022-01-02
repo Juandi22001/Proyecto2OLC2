@@ -1168,6 +1168,8 @@ def Comparacion_Infectados_Vacunados_Pais():
 
 if options[0] =='Inicio':
     Inicio()
+elif options[0] =='Tendencia de Covid por pais':
+    Tendencia_Covid_Pais()
 
 
 
