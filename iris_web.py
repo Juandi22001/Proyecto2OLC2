@@ -1,4 +1,4 @@
-import hydralit as hy
+
 import streamlit as st
 import apps
 import pandas as pd
@@ -8,6 +8,7 @@ import pandas as pd
 from io  import StringIO
 import altair as alt
 from vega_datasets import data
+import hydralit as hy
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error,r2_score
