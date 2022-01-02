@@ -3,11 +3,10 @@ import streamlit as st
 
 import pandas as pd
 from PIL import Image
-import pickle
+
 import pandas as pd
 from io  import StringIO
 
-import hydralit as hy
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error,r2_score
@@ -20,18 +19,22 @@ image4 = Image.open('inicio.png')
 st.image(image4, width=3000,use_column_width='auto')
 
 #st.image(image, caption='Sunrise by the mountains')
-app = hy.HydraApp(title='Simple Multi-Page App')
 
-with open('lin_reg.pkl', 'rb') as li:
-    lin_reg = pickle.load(li)
+
+options = st.multiselect(
+    'Bienvenido escoja la opcion que desea ',
+        ['Inicio', 'Tendencia de Covid por pais'])
+
+
+st.write('You selected:', options)
+
 
 video_file = open('efe.mp4', 'rb')
 video_bytes = video_file.read()
 
 
 
-@app.addapp(icon="🛰️")
-def Inicio():
+def Inicio(icon="☄️"):
 
     st.video(video_bytes,start_time=1)
     st.markdown( '####  CORONAVIRUS DATA ANALYSIS WITH MACHINE LEARNING es una aplicación desarollada con el unico  proposito de analizar a detalle   el virus COVID-19'  )
@@ -49,7 +52,7 @@ def Inicio():
 
 
 
-@app.addapp(icon='📈')
+
 def Tendencia_Covid_Pais():
     #image_tendencia = Image.open('tendenciaa.png')
     #st.image(image_tendencia, caption='Sunrise by the mountains' ,width=00,clamp=600)
@@ -74,7 +77,7 @@ def Tendencia_Covid_Pais():
         dataframe = pd.read_csv(uploaded_file)
         st.write(dataframe)
 
-        hy.info("escoja Los campos que considere nescesarios para realizar la Tendencia de casos por pais")
+        st.info("escoja Los campos que considere nescesarios para realizar la Tendencia de casos por pais")
 
         var = st.selectbox(
         'Seleccione el campo Country o pais ',
@@ -135,12 +138,12 @@ def Tendencia_Covid_Pais():
         image7 = Image.open('tendenciaa.png')
 
         st.image(image7, width=1200,use_column_width='auto')
-        hy.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
-        hy.info(reg.coef_)
+        st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
+        st.info(reg.coef_)
         if reg.coef_ < 0:
-            hy.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  los casos de covid 19 han ido disminuyendo considerablemente ')
+            st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  los casos de covid 19 han ido disminuyendo considerablemente ')
         else:
-            hy.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   los casos en este pais  han ido aumentando considerablemente  alo largo de los ultimos reportes ')
+            st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   los casos en este pais  han ido aumentando considerablemente  alo largo de los ultimos reportes ')
 
 
         st.markdown('## Grafica Polinomial  ')
@@ -191,7 +194,7 @@ def Tendencia_Covid_Pais():
 
 
 
-@app.addapp(icon="🧮")
+
 def Prediccion_Infectados_Pais(icon='pred.svg'):
     image2 = Image.open('prediccion_pais .png')
 
@@ -215,7 +218,7 @@ def Prediccion_Infectados_Pais(icon='pred.svg'):
         st.write(dataframe)
 
 
-        hy.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
+        st.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
 
         var = st.selectbox(
         'Seleccione el campo Country o pais ',
@@ -291,7 +294,7 @@ def Prediccion_Infectados_Pais(icon='pred.svg'):
 
 
 
-@app.addapp(icon="🧮")
+
 def Prediccion_Muertes_Departamento ():
 
 
@@ -317,7 +320,7 @@ def Prediccion_Muertes_Departamento ():
     # Can be used wherever a "file-like" object is accepted:
         dataframe = pd.read_csv(uploaded_file)
         st.write(dataframe)
-        hy.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
+        st.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
 
         var = st.selectbox(
         'Seleccione el campo Departamento o Estado ',
@@ -389,7 +392,7 @@ def Prediccion_Muertes_Departamento ():
 
 
 
-@app.addapp(icon="☠️")
+
 def Analisis_Muertes_por_Pais():
     image22 = Image.open('analisis_muerte.png')
 
@@ -413,7 +416,7 @@ def Analisis_Muertes_por_Pais():
         st.write(dataframe)
 
 
-        hy.info("escoja Los campos que considere nescesarios para realizar el analisis")
+        st.info("escoja Los campos que considere nescesarios para realizar el analisis")
 
 
 
@@ -482,20 +485,20 @@ def Analisis_Muertes_por_Pais():
 
         plt.show()
         st.pyplot()
-        hy.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
+        st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
         ecuacion='Y='+str(reg.coef_)+'X+'+str(reg.intercept_)
-        hy.info(ecuacion)
-        hy.info(reg.coef_)
+        st.info(ecuacion)
+        st.info(reg.coef_)
 
         if reg.coef_ < 0:
-            hy.info('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  las muertes por COVID-19  en ese pais han ido  disminuyendo considerablemente ')
+            st.info('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  las muertes por COVID-19  en ese pais han ido  disminuyendo considerablemente ')
         else:
-            hy.error('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   las muertes por COVID-19 en este pais han ido en aumento  ')
+            st.error('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   las muertes por COVID-19 en este pais han ido en aumento  ')
 
 
 
 
-@app.addapp(icon="📈")
+
 def Tendencia_casos_Departamento():
 
 
@@ -523,7 +526,7 @@ def Tendencia_casos_Departamento():
         dataframe = pd.read_csv(uploaded_file)
         st.write(dataframe)
 
-        hy.info("escoja Los campos que considere nescesarios para realizar la Tendencia de casos por departamento")
+        st.info("escoja Los campos que considere nescesarios para realizar la Tendencia de casos por departamento")
 
         var = st.selectbox(
         'Seleccione el campo departamentos o estado segun sea el caso ',
@@ -571,12 +574,12 @@ def Tendencia_casos_Departamento():
         plt.plot(prediction_space, reg.predict(prediction_space))
         plt.show()
         st.pyplot()
-        hy.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
-        hy.info(reg.coef_)
+        st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
+        st.info(reg.coef_)
         if reg.coef_ < 0:
-            hy.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  los casos de covid 19 han ido disminuyendo considerablemente en este Estado  ')
+            st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  los casos de covid 19 han ido disminuyendo considerablemente en este Estado  ')
         else:
-            hy.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   los casos en este pais  han ido aumentando considerablemente  en este Estado alo largo de los ultimos reportes ')
+            st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   los casos en este pais  han ido aumentando considerablemente  en este Estado alo largo de los ultimos reportes ')
 
 
         st.markdown('## Grafica Polinomial  ')
@@ -627,7 +630,7 @@ def Tendencia_casos_Departamento():
     st.image(image, caption='Prediccion de Infectados por pais',width=200,use_column_width='auto')
 
 
-@app.addapp(icon="🧮")
+
 def Prediccion_Muertes_Pais():
     image11 = Image.open('prediccion_muerte_pais.png')
 
@@ -651,7 +654,7 @@ def Prediccion_Muertes_Pais():
         st.write(dataframe)
 
 
-        hy.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
+        st.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
 
         var = st.selectbox(
         'Seleccione el campo Country o pais ',
@@ -722,7 +725,6 @@ def Prediccion_Muertes_Pais():
 
 
 
-@app.addapp(icon="📈")
 def Tendencia_Vacunancion_Pais():
     image5 = Image.open('tendencia_vacuna_pais.png')
 
@@ -744,7 +746,7 @@ def Tendencia_Vacunancion_Pais():
         dataframe = pd.read_csv(uploaded_file)
         st.write(dataframe)
 
-        hy.info("escoja Los campos que considere nescesarios para realizar la Tendencia de Vacunacion por pais")
+        st.info("escoja Los campos que considere nescesarios para realizar la Tendencia de Vacunacion por pais")
         var = st.selectbox(
         'Seleccione el campo Country o pais ',
         (dataframe.columns))
@@ -793,12 +795,12 @@ def Tendencia_Vacunancion_Pais():
         st.pyplot()
         image7 = Image.open('tendenciaa.png')
         st.image(image7, width=1200,use_column_width='auto')
-        hy.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
-        hy.info(reg.coef_)
+        st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
+        st.info(reg.coef_)
         if reg.coef_ < 0:
-            hy.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+pais_v+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   ')
+            st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+pais_v+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   ')
         else:
-            hy.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion')
+            st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion')
 
 
         st.markdown('## Grafica Polinomial de la vacunacion del pais : '+pais_v)
@@ -846,7 +848,6 @@ def Tendencia_Vacunancion_Pais():
 
 
 
-@app.addapp(icon="💉")
 def Comparacion_Vacunacion_Pais():
     image12 = Image.open('Comparacion_vacunas.png')
 
@@ -868,7 +869,7 @@ def Comparacion_Vacunacion_Pais():
         dataframe = pd.read_csv(uploaded_file)
         st.write(dataframe)
 
-        hy.info("escoja Los campos que considere nescesarios para realizar la Comparacion de Vacunacion entre 2 paises ")
+        st.info("escoja Los campos que considere nescesarios para realizar la Comparacion de Vacunacion entre 2 paises ")
         var = st.selectbox(
         'Seleccione el campo Country o pais ',
         (dataframe.columns))
@@ -938,12 +939,12 @@ def Comparacion_Vacunacion_Pais():
             st.pyplot()
             image7 = Image.open('tendenciaa.png')
             st.image(image7, width=1200,use_column_width='auto')
-            hy.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
-            hy.info(reg.coef_)
+            st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
+            st.info(reg.coef_)
             if reg.coef_ < 0:
-                hy.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+pais_v+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   ')
+                st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+pais_v+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   ')
             else:
-                hy.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion')
+                st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion')
 
 
 
@@ -971,15 +972,15 @@ def Comparacion_Vacunacion_Pais():
             st.pyplot()
             image7 = Image.open('tendenciaa.png')
             st.image(image7, width=1200,use_column_width='auto')
-            hy.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
-            hy.info(reg.coef_)
+            st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
+            st.info(reg.coef_)
             if reg.coef_ < 0:
-                hy.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+pais_v+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   ')
+                st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+pais_v+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   ')
             else:
-                hy.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion')
+                st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion')
 
 
-@app.addapp(icon="🌍")
+
 def Analisis_Comparativo_entre2_pais_contienente():
     image51 = Image.open('comparacion_pais_contienente.png')
 
@@ -1001,7 +1002,7 @@ def Analisis_Comparativo_entre2_pais_contienente():
         dataframe = pd.read_csv(uploaded_file)
         st.write(dataframe)
 
-        hy.info("escoja Los campos que considere nescesarios para realizar la Tendencia de Vacunacion por pais")
+        st.info("escoja Los campos que considere nescesarios para realizar la Tendencia de Vacunacion por pais")
         genre = st.radio(
         "What's your favorite movie genre",
         ('Comedy', 'Drama', 'Documentary'))
@@ -1080,11 +1081,11 @@ def Analisis_Comparativo_entre2_pais_contienente():
 
         st.bar_chart(grafica)
 
-@app.addapp()
-def app8():
-    hy.info('Hello from app 3')
 
-@app.addapp(icon="💉")
+def app8():
+    st.info('Hello from app 3')
+
+
 def Comparacion_Infectados_Vacunados_Pais():
 
 
@@ -1108,7 +1109,7 @@ def Comparacion_Infectados_Vacunados_Pais():
         dataframe = pd.read_csv(uploaded_file)
         st.write(dataframe)
 
-        hy.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
+        st.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
 
         var = st.selectbox(
         'Seleccione el campo Country o pais ',
@@ -1161,71 +1162,12 @@ def Comparacion_Infectados_Vacunados_Pais():
 
 
 
-@app.addapp()
-def app90():
-    hy.info('Hello from app 3')
-
-@app.addapp()
-def app91():
-    hy.info('Hello from app 3')
-
-@app.addapp()
-def app92():
-    hy.info('Hello from app 3')
-
-@app.addapp()
-def app93():
-    hy.info('Hello from app 3')
-
-@app.addapp()
-def app94():
-    hy.info('Hello from app 3')
-
-@app.addapp()
-def app95():
-    hy.info('Hello from app 3')
-
-@app.addapp()
-def app96():
-    hy.info('Hello from app 3')
-
-@app.addapp()
-def app97():
-    hy.info('Hello from app 3')
-
-@app.addapp()
-def app98():
-    hy.info('Hello from app 3')
-
-@app.addapp()
-def app99():
-    hy.info('Hello from app 3')
-
-@app.addapp()
-def app900():
-    hy.info('Hello from app 3')
-
-@app.addapp()
-def app9011():
-    hy.info('Hello from app 3')
-
-@app.addapp()
-def app9012():
-    hy.info('Hello from app 3')
-
-@app.addapp()
-def app9013():
-    hy.info('Hello from app 3')
-
-@app.addapp()
-def app9014():
-    hy.info('Hello from app 3')
 
 
 
 
+if options[0] =='Inicio':
+    Inicio()
 
 
-#Run the whole lot, we get navbar, state management and app isolation, all with this tiny amount of work.
-app.run()
 
