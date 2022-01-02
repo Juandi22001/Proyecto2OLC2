@@ -942,7 +942,7 @@ def Comparacion_Vacunacion_Pais():
             st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
             st.info(reg.coef_)
             if reg.coef_ < 0:
-                st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+pais_v+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   ')
+                st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+options[0]+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   ')
             else:
                 st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion')
 
@@ -975,7 +975,7 @@ def Comparacion_Vacunacion_Pais():
             st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
             st.info(reg.coef_)
             if reg.coef_ < 0:
-                st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+pais_v+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   ')
+                st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+options[0]+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   ')
             else:
                 st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion')
 
