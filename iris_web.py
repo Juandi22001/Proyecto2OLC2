@@ -7,12 +7,12 @@ from PIL import Image
 import pandas as pd
 from io  import StringIO
 
-import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error,r2_score
 import numpy as np
 from sklearn.preprocessing import PolynomialFeatures
 
+import matplotlib.pyplot as plt
 from streamlit.elements import selectbox
 image4 = Image.open('inicio.png')
 
