@@ -1,12 +1,13 @@
-import hydralit as hy
+
 import streamlit as st
-import apps
+
 import pandas as pd
 from PIL import Image
 import pickle
 import pandas as pd
 from io  import StringIO
 from vega_datasets import data
+import hydralit as hy
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error,r2_score
