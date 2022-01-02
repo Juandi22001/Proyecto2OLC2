@@ -1,0 +1,12 @@
+
+sklearn
+pandas
+streamlit
+hydralit
+PIL
+pickle
+io
+alatair
+vega_datasets
+matplotlib.pyplot
+numpy
