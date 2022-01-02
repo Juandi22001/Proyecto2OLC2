@@ -1,6 +1,6 @@
 
 import streamlit as st
-import apps
+
 import pandas as pd
 from PIL import Image
 import pickle
