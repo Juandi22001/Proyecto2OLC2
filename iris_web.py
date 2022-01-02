@@ -6,7 +6,6 @@ from PIL import Image
 import pickle
 import pandas as pd
 from io  import StringIO
-import altair as alt
 from vega_datasets import data
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
