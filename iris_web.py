@@ -1,4 +1,5 @@
 
+from scipy.sparse import data
 import streamlit as st
 
 import pandas as pd
@@ -274,9 +275,9 @@ def Prediccion_Infectados_Pais(icon='pred.svg'):
 
         plt.plot(X_NEW,Y_NEW,color='coral',linewidth=4)
         plt.grid()
-        plt.xlim(x_new_main,x__new_max)
 
-        plt.ylim(0,1000)
+
+
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
         plt.title("Prediccion de Infectados en el pais "+pais+title)
         plt.xlabel('#')
@@ -728,8 +729,7 @@ def Prediccion_Muertes_dia():
 
         plt.plot(X_NEW,Y_NEW,color='red',linewidth=4)
         plt.grid()
-        plt.xlim(x_new_main,x__new_max)
-        plt.ylim(0,2500)
+
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
         plt.title("Prediccion de Muertes por Covid en el pais "+pais+title)
         plt.xlabel('#dias')
@@ -922,6 +922,143 @@ def Prediccion_Muertes_Pais():
         plt.show()
         st.pyplot()
 
+def Muertes_Edad():
+    image51 = Image.open('muertes_promedio_edad.png')
+
+    st.image(image51, width=1200,use_column_width='auto')
+
+    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+    if uploaded_file is not None:
+    # To read file as bytes:
+        bytes_data = uploaded_file.getvalue()
+
+
+    # To convert to a string based IO:
+        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
+
+    # To read file as string:
+        string_data = stringio.read()
+
+    # Can be used wherever a "file-like" object is accepted:
+        dataframe = pd.read_csv(uploaded_file)
+        st.write(dataframe)
+
+        st.info("escoja Los campos que considere nescesarios para realizar la Tendencia de Vacunacion por pais")
+        var = st.selectbox(
+        'Seleccione el campo Country o pais ',
+        (dataframe.columns))
+        opcion1=var.upper()
+        st.write(opcion1)
+        st.write(dataframe[var])
+
+        var1 = st.selectbox(
+        'Seleccione el campo casos  o confirmited ',
+        (dataframe.columns))
+        opcion2=var1.upper()
+        st.write(opcion2)
+        st.write(dataframe[var1])
+
+        var2 = st.selectbox(
+        'Seleccione el campo muertes   ',
+        (dataframe.columns))
+        opcion3=var2.upper()
+        st.write(opcion3)
+        st.write(dataframe[var2])
+
+
+
+        var3 = st.selectbox(
+        'Seleccione el campo edad   ',
+        (dataframe.columns))
+        opcion4=var3.upper()
+        st.write(opcion4)
+        st.write(dataframe[var2])
+        st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar el promedio")
+        pais_v = st.text_input('',placeholder='Escriba al pais al que quiere realizar el analisis')
+        pais_Escogido_v=[pais_v]
+        data_pais=dataframe[dataframe[var].isin(pais_Escogido_v)]
+        casos=[]
+        muertes=[]
+        edad=[]
+        promedio=[]
+
+        st.write(data_pais)
+
+        df_edad=data_pais[var3].drop_duplicates()
+        edades=[]
+
+
+        for i in df_edad.index:
+            edades.append(df_edad[i])
+        edades.sort(reverse=True)
+        pd_Edades=pd.DataFrame({"edades":edades
+
+                })
+        for row in pd_Edades.itertuples():
+            edad_Calc=[row.edades]
+            calc=data_pais[data_pais[var3].isin(edad_Calc)]
+            casos.append(calc[var1].sum())
+            muertes.append(calc[var2].sum())
+            edad.append(row.edades)
+            calculo =calc[var2].sum()/calc[var1].sum()
+            promedio.append(calculo)
+
+
+
+
+
+
+
+
+        promedios = pd.DataFrame({"Muertes":muertes,
+                "Casos":casos,"Edad":edad,"PromediodeMuertes":promedio
+                })
+
+        st.table(promedios)
+
+
+        number = st.number_input('Inserte el grado  del que desea hacer la grafica  prediccion')
+
+        tamanio=edad.__len__()
+        arreglo=[]
+        for i in range (0,tamanio):
+            arreglo.append(i)
+        X=np.asarray(promedios.Casos)
+        Y=promedios.Edad
+
+        X=X[:,np.newaxis]
+        Y=Y[:,np.newaxis]
+        nb_degree=int(number)
+        polynomial_features=PolynomialFeatures(degree=nb_degree)
+        st.set_option('deprecation.showPyplotGlobalUse', False)
+        X_TRANSF=polynomial_features.fit_transform(X)
+
+        model= LinearRegression()
+        model.fit(X_TRANSF,Y)
+
+        Y_NEW = model.predict(X_TRANSF)
+        rmse=np.sqrt(mean_squared_error(Y,Y_NEW))
+
+        r2=r2_score(Y,Y_NEW)
+        x_new_main=0.0
+        x__new_max=50.0
+
+        X_NEW=np.linspace(x_new_main,x__new_max,50)
+
+        X_NEW=X_NEW[:,np.newaxis]
+        X_NEW_TRANSF =polynomial_features.fit_transform(X_NEW)
+
+        Y_NEW=model.predict(X_NEW_TRANSF)
+
+        plt.plot(X_NEW,Y_NEW,color='red',linewidth=4)
+        plt.grid()
+
+        title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
+        plt.title("Muertes por covid-19  en el pais  "+pais_v+title)
+        plt.xlabel('#casos de covid 19')
+        plt.ylabel('Muertes por COVID-19')
+        plt.show()
+        st.pyplot()
 
 
 def Tendencia_Vacunancion_Pais():
@@ -962,7 +1099,12 @@ def Tendencia_Vacunancion_Pais():
 
 
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar la tendencia de vacunacion")
+
         pais_v = st.text_input('',placeholder='Escriba al pais al que quiere realizar el analisis')
+
+        st.markdown('## Grafica Polinomial de la vacunacion del pais : '+pais_v)
+        number = st.number_input('Inserte el grado  del que desea hacer la grafica  prediccion')
+
         pais_Escogido_v=[pais_v]
         st.markdown('# Pais escogido:'+pais_v)
 
@@ -1001,9 +1143,6 @@ def Tendencia_Vacunancion_Pais():
         else:
             st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion')
 
-
-        st.markdown('## Grafica Polinomial de la vacunacion del pais : '+pais_v)
-        number = st.number_input('Inserte el grado  del que desea hacer la grafica  ')
         st.write('El grado seria ', number)
         X2=np.asarray(arreglo)
         Y2=casos_pais_v[var1]
@@ -1201,10 +1340,6 @@ def Analisis_Comparativo_entre2_pais_contienente():
         dataframe = pd.read_csv(uploaded_file)
         st.write(dataframe)
 
-        st.info("escoja Los campos que considere nescesarios para realizar la Tendencia de Vacunacion por pais")
-        genre = st.radio(
-        "What's your favorite movie genre",
-        ('Comedy', 'Drama', 'Documentary'))
 
         var = st.selectbox(
         'Seleccione el campo pais o continente ',
@@ -1219,66 +1354,267 @@ def Analisis_Comparativo_entre2_pais_contienente():
         opcion2=var1.upper()
         st.write(opcion2)
         st.write(dataframe[var1])
+
+        var2 = st.selectbox(
+        'Seleccione el campo casos  ',
+        (dataframe.columns))
+        opcion3=var2.upper()
+        st.write(opcion3)
+        st.write(dataframe[var2])
         var3 = st.selectbox(
         'Seleccione el campo pruebas  ',
         (dataframe.columns))
-        opcion2=var3.upper()
-        st.write(opcion2)
+        opcion4=var3.upper()
+        st.write(opcion4)
         st.write(dataframe[var3])
+
+        var4 = st.selectbox(
+        'Seleccione el campo muertes  ',
+        (dataframe.columns))
+        opcion5=var4.upper()
+        st.write(opcion5)
+        st.write(dataframe[var4])
+
         st.info(" si escogio los campos correctamente proceda a escoger los paises o contienentes para el analisis")
 
         options = st.multiselect(
             'Escoja los paises  o Continentes',
             dataframe[var].drop_duplicates())
+        pais=[]
+        casos=[]
+        pruebas=[]
+        muertes=[]
+        vacunacion=[]
+        tamanio=options.__len__()
+        for i in range (0,tamanio):
+            pais_Escogido=[options[i]]
 
-        st.write('You selected:', options)
-        pais_Escogido=[options[0]]
-        pais_Escogido2=[options[1]]
-        pais_Escogido3=[options[2]]
-        pais_Escogido4=[options[3]]
-        #st.markdown('##'+pais+"vs"+pais2)
-
-        info_pais=dataframe[dataframe[var].isin(pais_Escogido)]
-        info_pais2=dataframe[dataframe[var].isin(pais_Escogido2)]
-        info_pais3=dataframe[dataframe[var].isin(pais_Escogido3)]
-        info_pais4=dataframe[dataframe[var].isin(pais_Escogido4)]
-
-        st.markdown('## Comparativa de Vacunacion entre  los paises o continentes')
-        vacunacion_pais1=info_pais[var1].sum()
-
-        vacunacion_pais2=info_pais2[var1].sum()
-        vacunacion_pais3=info_pais3[var1].sum()
-        vacunacion_pais4=info_pais4[var1].sum()
+            lugar=dataframe[dataframe[var].isin(pais_Escogido)]
 
 
+            pais.append(options[i])
+            casos.append(lugar[var2].sum())
+            pruebas.append(lugar[var3].sum())
+            muertes.append(lugar[var4].sum())
+            vacunacion.append(lugar[var1].sum())
+
+            compracion = pd.DataFrame({"Lugar":pais,
+                "CasosCovid-19":casos,"Pruebas":pruebas,"Vacunas":vacunacion,"Muertes":muertes
+                })
 
 
+        st.write(compracion)
+        st.info('Si usted lo desea puede ver la tendencia de vacunacion, tendencia muertes y la prediccion de casos  para el lugar que escogio ')
+        pais_v = st.text_input('',placeholder='Escriba al pais o lugar al que quiere realizar el analisis')
+        pais_Escogido_v=[pais_v]
+        st.markdown('# Pais escogido:'+pais_v)
 
+        casos_pais_v=dataframe[dataframe[var].isin(pais_Escogido_v)]
 
-        grafica=pd.DataFrame({
-            'vacunacion':[vacunacion_pais1,vacunacion_pais2,vacunacion_pais3,vacunacion_pais4]
-        },  index=[options[0],options[1],options[2],options[3]]
-
-        )
-        st.write(grafica)
-
-        st.markdown('## Comparativa de Muertes entre  los paises o continentes')
-        muerte_pais1=info_pais[var3].sum()
-
-        vacunacion_pais2=info_pais2[var].sum()
-        vacunacion_pais3=info_pais3[var1].sum()
-        vacunacion_pais4=info_pais4[var1].sum()
-        grafica=pd.DataFrame({
-            'vacunacion':[vacunacion_pais1,vacunacion_pais2,vacunacion_pais3,vacunacion_pais4]
-        },  index=[options[0],options[1],options[2],options[3]]
-
-        )
-        st.write(grafica)
+        tamanio=casos_pais_v[var1].__len__()
+        arreglo=[]
+        for i in range (0,tamanio):
+            arreglo.append(i)
 
 
 
 
-        st.bar_chart(grafica)
+        X=np.asarray(arreglo).reshape(-1,1)
+
+
+        Y=casos_pais_v[var1]
+        st.set_option('deprecation.showPyplotGlobalUse', False)
+        reg = LinearRegression()
+        reg.fit(X, Y)
+        prediction_space = np.linspace(min(X), max(X)).reshape(-1, 1)
+        plt.scatter(X, Y, color='blue')
+
+        plt.title("TENDENCIA DE VACUNACION  en:"+pais_v)
+        plt.ylabel('VACUNACION en '+pais_v)
+        plt.xlabel('#')
+        plt.plot(prediction_space, reg.predict(prediction_space))
+        plt.show()
+        st.pyplot()
+        st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
+        st.info(reg.coef_)
+        if reg.coef_ < 0:
+            st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el lugar  '+pais_v+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   ')
+        else:
+            st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este lugar ha logrado  mantener el ritmo en su  programa de vacunacion')
+
+
+
+
+
+
+
+
+        X2=np.asarray(arreglo).reshape(-1,1)
+
+
+        Y2=casos_pais_v[var4]
+        st.set_option('deprecation.showPyplotGlobalUse', False)
+        reg = LinearRegression()
+        reg.fit(X2, Y2)
+        prediction_space = np.linspace(min(X2), max(X2)).reshape(-1, 1)
+        plt.scatter(X2, Y2, color='red')
+
+        plt.title("TENDENCIA DE Muertes  en:"+pais_v)
+        plt.ylabel('Muertes en '+pais_v)
+        plt.xlabel('#')
+        plt.plot(prediction_space, reg.predict(prediction_space))
+        plt.show()
+        st.pyplot()
+        st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
+        st.info(reg.coef_)
+        if reg.coef_ < 0:
+            st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+pais_v+'  ha logrado reducir las muertes en gran manera    ')
+        else:
+            st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa     este lugar no ha logrado reducir las muertes ')
+
+        number = st.number_input('Inserte el grado  del que desea hacer la grafica  prediccion')
+        st.write('El grado seria ', number)
+
+
+
+        X3=np.asarray(arreglo)
+        Y3=casos_pais_v[var2]
+
+        X3=X3[:,np.newaxis]
+        Y3=Y3[:,np.newaxis]
+        nb_degree=int(number)
+        polynomial_features=PolynomialFeatures(degree=nb_degree)
+        st.set_option('deprecation.showPyplotGlobalUse', False)
+        X_TRANSF=polynomial_features.fit_transform(X3)
+
+        model= LinearRegression()
+        model.fit(X_TRANSF,Y3)
+
+        Y_NEW = model.predict(X_TRANSF)
+        rmse=np.sqrt(mean_squared_error(Y3,Y_NEW))
+
+        r2=r2_score(Y,Y_NEW)
+        x_new_main=0.0
+        x__new_max=50.0
+
+
+        X_NEW=np.linspace(x_new_main,x__new_max,50)
+
+        X_NEW=X_NEW[:,np.newaxis]
+        X_NEW_TRANSF =polynomial_features.fit_transform(X_NEW)
+
+        Y_NEW=model.predict(X_NEW_TRANSF)
+
+        plt.plot(X_NEW,Y_NEW,color='coral',linewidth=4)
+        plt.grid()
+
+
+
+        title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
+        plt.title("Prediccion de Infectados en  "+pais_v+title)
+        plt.xlabel('#')
+        plt.ylabel('Infectados por COVID-19')
+        plt.show()
+        st.pyplot()
+
+
+
+
+        #st.bar_chart(grafica)
+def indice_progresion():
+    image33 = Image.open('indice_progresion.png')
+
+    st.image(image33, width=1200,use_column_width='auto')
+
+    uploaded_file = st.file_uploader("Para realizar    analisis el archivo  escoja un archivo de preferencia CSV")
+    if uploaded_file is not None:
+    # To read file as bytes:
+        bytes_data = uploaded_file.getvalue()
+
+
+    # To convert to a string based IO:
+        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
+
+    # To read file as string:
+        string_data = stringio.read()
+
+    # Can be used wherever a "file-like" object is accepted:
+        dataframe = pd.read_csv(uploaded_file)
+        st.write(dataframe)
+
+        st.info("escoja Los campos que considere nescesarios para realizar la tasa de muertes por COVID-19")
+        var = st.selectbox(
+        'Seleccione el casos ',
+        (dataframe.columns))
+        opcion1=var.upper()
+        st.write(opcion1)
+        st.write(dataframe[var])
+
+        dias = st.number_input('Inserte numero de dias  para poder  ver la progresion de la pandemia')
+        st.write('numero de dias ', dias)
+        tamanio=int(dias)
+        arreglo=[]
+        casosar=[]
+        for i in range (0,tamanio):
+            arreglo.append(i)
+        casos=dataframe[var]
+
+        df=pd.DataFrame({
+            "casos":dataframe[var],
+                })
+        st.write(df)
+        cont1=0
+        total_casos=0
+        for i in df.itertuples():
+            cont1=cont1+1
+            if cont1 <= tamanio:
+                casosar.append(i.casos)
+                total_casos=int(i.casos)+total_casos
+
+        st.info('En '+str(tamanio)+' dias han habido '+str(total_casos)+' casos de COVID-19')
+
+        number = st.number_input('Inserte el grado  del que desea hacer la grafica de casos de covid-19')
+        st.write('El grado seria ', number)
+
+        X=np.asarray(arreglo)
+        Y=np.asarray(casosar)
+
+        X=X[:,np.newaxis]
+        Y=Y[:,np.newaxis]
+        nb_degree=int(number)
+        polynomial_features=PolynomialFeatures(degree=nb_degree)
+        st.set_option('deprecation.showPyplotGlobalUse', False)
+        X_TRANSF=polynomial_features.fit_transform(X)
+
+        model= LinearRegression()
+        model.fit(X_TRANSF,Y)
+
+        Y_NEW = model.predict(X_TRANSF)
+        rmse=np.sqrt(mean_squared_error(Y,Y_NEW))
+
+        r2=r2_score(Y,Y_NEW)
+        x_new_main=0
+        x__new_max=400
+
+
+
+        X_NEW=np.linspace(x_new_main,x__new_max,200)
+
+        X_NEW=X_NEW[:,np.newaxis]
+        X_NEW_TRANSF =polynomial_features.fit_transform(X_NEW)
+
+        Y_NEW=model.predict(X_NEW_TRANSF)
+
+        plt.plot(X_NEW,Y_NEW,color='red',linewidth=4)
+        plt.grid()
+
+        title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
+        plt.title("Progresion de la pandemia de COVID-19"+title)
+        plt.xlabel('#dias')
+        plt.ylabel('Casos de  COVID-19')
+        plt.show()
+        st.pyplot()
+
 
 
 def Tasa_Mortalidad_Pais():
@@ -1766,6 +2102,261 @@ def Tendencia_Infectados_dia():
         plt.show()
         st.pyplot()
 
+def Comportamiento_Casos_Municipio():
+    image44 = Image.open('comportamiento_personas_covid.png')
+
+    st.image(image44,width=1200,use_column_width='auto')
+
+
+    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+    if uploaded_file is not None:
+    # To read file as bytes:
+        bytes_data = uploaded_file.getvalue()
+
+
+    # To convert to a string based IO:
+        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
+
+    # To read file as string:
+        string_data = stringio.read()
+
+    # Can be used wherever a "file-like" object is accepted:
+        dataframe = pd.read_csv(uploaded_file)
+        st.write(dataframe)
+
+
+        st.info("escoja Los campos que considere nescesarios para obtener el porcentaje")
+
+
+        var = st.selectbox(
+        'Seleccione el campo Country o pais ',
+        (dataframe.columns))
+        opcion1=var.upper()
+        st.write(opcion1)
+        st.write(dataframe[var])
+
+        var1 = st.selectbox(
+        'Seleccione el campo municipio ',
+        (dataframe.columns))
+        opcion2=var1.upper()
+        st.write(opcion2)
+        st.write(dataframe[var1])
+
+        var2 = st.selectbox(
+        'Seleccione el campo casos  o confirm ',
+        (dataframe.columns))
+        opcion3=var2.upper()
+        st.write(opcion3)
+        st.write(dataframe[var2])
+
+
+
+        var3 = st.selectbox(
+        'Seleccione el campo hombres ',
+        (dataframe.columns))
+        opcion4=var3.upper()
+        st.write(opcion4)
+        st.write(dataframe[var3])
+
+
+
+        var4 = st.selectbox(
+        'Seleccione el campo mujeres ',
+        (dataframe.columns))
+        opcion5=var4.upper()
+        st.write(opcion5)
+        st.write(dataframe[var4])
+
+
+        st.info(" si escogio los campos correctamente  proceda a escoger el pais para   poder ver el comportamiento")
+        pais = st.text_input('',placeholder='Escriba al pais   al que quiere realizar el analisis')
+        pais_Escogido_v=[pais]
+        data_pais=dataframe[dataframe[var].isin(pais_Escogido_v)]
+
+        casos=[]
+        mujeres=[]
+        hombres=[]
+        municipios=[]
+
+
+        pd_municipios=pd.DataFrame({"municipios":data_pais[var1].drop_duplicates()
+
+            })
+
+        for row in pd_municipios.itertuples():
+            municipio=[row.municipios]
+
+            calc=data_pais[data_pais[var1].isin(municipio)]
+            municipios.append(row.municipios)
+            casos.append(calc[var2].sum())
+            mujeres.append(calc[var4].sum())
+            hombres.append(calc[var3].sum())
+
+
+        comportamiento_muni = pd.DataFrame({"Municipio":municipios,
+                "Casos":casos,"Hombres":hombres,"Mujeres":mujeres
+                })
+
+        st.table(comportamiento_muni)
+        tamanio=municipios.__len__()
+        arreglo=[]
+        for i in range (0,tamanio):
+            arreglo.append(i)
+        X=np.asarray(arreglo)
+        Y=comportamiento_muni.Casos
+        number = st.number_input('Inserte el grado  del que desea hacer la grafica  prediccion')
+
+        X=X[:,np.newaxis]
+        Y=Y[:,np.newaxis]
+        nb_degree=int(number)
+        polynomial_features=PolynomialFeatures(degree=nb_degree)
+        st.set_option('deprecation.showPyplotGlobalUse', False)
+        X_TRANSF=polynomial_features.fit_transform(X)
+
+        model= LinearRegression()
+        model.fit(X_TRANSF,Y)
+
+        Y_NEW = model.predict(X_TRANSF)
+        rmse=np.sqrt(mean_squared_error(Y,Y_NEW))
+
+        r2=r2_score(Y,Y_NEW)
+        x_new_main=0.0
+        x__new_max=50.0
+
+        X_NEW=np.linspace(x_new_main,x__new_max,50)
+
+        X_NEW=X_NEW[:,np.newaxis]
+        X_NEW_TRANSF =polynomial_features.fit_transform(X_NEW)
+
+        Y_NEW=model.predict(X_NEW_TRANSF)
+
+        plt.plot(X_NEW,Y_NEW,color='red',linewidth=4)
+        plt.grid()
+
+        title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
+        plt.title("Comportamiento de casos de COVID-19 "+pais+title)
+        plt.xlabel('#Municipio')
+        plt.ylabel('casos de COVID-19')
+        plt.show()
+        st.pyplot()
+
+
+
+
+
+
+
+
+
+
+def prediccion_ultimo_dia():
+    image111 = Image.open('prediccion_ultimo_dia.png')
+
+    st.image(image111,width=1200,use_column_width='auto')
+
+
+    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+    if uploaded_file is not None:
+    # To read file as bytes:
+        bytes_data = uploaded_file.getvalue()
+
+
+    # To convert to a string based IO:
+        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
+
+    # To read file as string:
+        string_data = stringio.read()
+
+    # Can be used wherever a "file-like" object is accepted:
+        dataframe = pd.read_csv(uploaded_file)
+        st.write(dataframe)
+
+        st.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
+
+        var = st.selectbox(
+        'Seleccione el campo Country o pais ',
+        (dataframe.columns))
+        opcion1=var.upper()
+        st.write(opcion1)
+        st.write(dataframe[var])
+
+        var1 = st.selectbox(
+        'Seleccione el campo muertes  ',
+        (dataframe.columns))
+        opcion2=var1.upper()
+        st.write(opcion2)
+        st.write(dataframe[var1])
+
+        st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar la prediccion")
+        pais = st.text_input('',placeholder='Escriba al pais al que quiere realizar el analisis')
+
+        pais_Escogido=[pais]
+        st.markdown('# Pais escogido:'+pais)
+
+
+        number = st.number_input('Inserte el grado  del que desea hacer la grafica  prediccion')
+        st.write('El grado seria ', number)
+
+        casos_pais=dataframe[dataframe[var].isin(pais_Escogido)]
+        st.write(casos_pais)
+        tamanio=365
+        cont1=0;
+        arreglo=[]
+        casosar=[]
+        for i in range (0,tamanio):
+            arreglo.append(i)
+        df=pd.DataFrame({
+                "casos":casos_pais[var1],
+                })
+        for i in df.itertuples():
+            cont1=cont1+1
+            if cont1 <= tamanio:
+                casosar.append(i.casos)
+
+
+
+        X=np.asarray(arreglo)
+        Y=np.asarray(casosar)
+
+        X=X[:,np.newaxis]
+        Y=Y[:,np.newaxis]
+        nb_degree=int(number)
+        polynomial_features=PolynomialFeatures(degree=nb_degree)
+        st.set_option('deprecation.showPyplotGlobalUse', False)
+        X_TRANSF=polynomial_features.fit_transform(X)
+
+        model= LinearRegression()
+        model.fit(X_TRANSF,Y)
+
+        Y_NEW = model.predict(X_TRANSF)
+        rmse=np.sqrt(mean_squared_error(Y,Y_NEW))
+
+        r2=r2_score(Y,Y_NEW)
+        x_new_main=0
+        x__new_max=400
+
+
+
+        X_NEW=np.linspace(x_new_main,x__new_max,200)
+
+        X_NEW=X_NEW[:,np.newaxis]
+        X_NEW_TRANSF =polynomial_features.fit_transform(X_NEW)
+
+        Y_NEW=model.predict(X_NEW_TRANSF)
+
+        plt.plot(X_NEW,Y_NEW,color='red',linewidth=4)
+        plt.grid()
+
+        title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
+        plt.title("Prediccion de casos  en el primer año por COVID-19 "+pais+title)
+        plt.xlabel('#dias')
+        plt.ylabel('CASOS COVID-19')
+        plt.show()
+        st.pyplot()
+
+
+
+
 
 def Porcentaje_Hombres_Covid():
     image44 = Image.open('porcentaje_hombres.png')
@@ -2176,11 +2767,11 @@ def Muertes_por_Region():
 
 op = st.multiselect(
     'Bienvenido escoja la opcion que desea ',
-        ['Inicio☄️', 'Tendencia de Covid por pais📈','Predicción de Infertados en un País🧮','Predicción de mortalidad por COVID en un Departamento🧮','Análisis del número de muertes por coronavirus en un País☠️'
+        ['Inicio☄️', 'Tendencia de Covid por pais📈','Inidice de Progresión de la pandemia.🦠','Predicción de Infertados en un País🧮','Predicción de mortalidad por COVID en un Departamento🧮','Análisis del número de muertes por coronavirus en un País☠️'
             ,'Tendencia de la vacunación de en un País💉📈','Tendencia de casos confirmados de Coronavirus en un departamento de un País📈'
-        ,'Predicción de mortalidad por COVID en un Pais🧮','Ánalisis Comparativo entres 2 o más paises o continentes🌎','Ánalisis Comparativo de Vacunación entre 2 paises💉'
+        ,'Predicción de mortalidad por COVID en un Pais🧮','Muertes promedio por casos confirmados y edad de covid 19 en un País☠️','Ánalisis Comparativo entres 2 o más paises o continentes🌎','Ánalisis Comparativo de Vacunación entre 2 paises💉'
         ,'Muertes según regiones de un país - Covid 19☠️','Predicciones de casos y muertes en todo el mundo🧮','Tasa de comportamiento de casos activos en relación al número de muertes en un continente☠️📈🦠','Tasa de mortalidad por coronavirus (COVID-19) en un país📈☠️'
-        ,'Predicción de casos confirmados por día🧮☠️','Factores de muerte por COVID-19 en un país.☠️','Porcentaje de muertes frente al total de casos en un país, región o continente.%📶☠️🌎','Porcentaje de hombres infectados por covid-19 en un País desde el primer caso activo🙍🏻‍♂️' ,'Tendencia del número de infectados por día de un País.🗓️📈',
+        ,'Predicción de muertes en el último día del primer año de infecciones en un país.☠️','Comportamiento y clasificación de personas infectadas por COVID-19 por municipio en un País.🦠','Predicción de casos confirmados por día🧮☠️','Factores de muerte por COVID-19 en un país.☠️','Porcentaje de muertes frente al total de casos en un país, región o continente.%📶☠️🌎','Porcentaje de hombres infectados por covid-19 en un País desde el primer caso activo🙍🏻‍♂️' ,'Tendencia del número de infectados por día de un País.🗓️📈',
         'Comparación entre el número de casos detectados y el número de pruebas de un país 💊💉'])
 
 
@@ -2239,6 +2830,28 @@ if len(op)>0:
         prediccion_mundial()
 
 
+    elif op[0]=='Muertes promedio por casos confirmados y edad de covid 19 en un País☠️':
+        Muertes_Edad()
+    elif op[0]=='Inidice de Progresión de la pandemia.🦠':
+        indice_progresion()
+
+    elif op[0]=='Comportamiento y clasificación de personas infectadas por COVID-19 por municipio en un País.🦠':
+        Comportamiento_Casos_Municipio()
+    elif op[0]=='Predicción de muertes en el último día del primer año de infecciones en un país.☠️':
+        prediccion_ultimo_dia()
+
+    elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
+        Analisis_Muertes_por_Pais()
+    elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
+        Analisis_Muertes_por_Pais()
+    elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
+        Analisis_Muertes_por_Pais()
+    elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
+        Analisis_Muertes_por_Pais()
+    elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
+        Analisis_Muertes_por_Pais()
+    elif op[0]=='Anlisis del número de muertes por coronavirus en un País☠️':
+        Analisis_Muertes_por_Pais()
     elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
         Analisis_Muertes_por_Pais()
     elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
