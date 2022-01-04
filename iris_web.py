@@ -76,7 +76,10 @@ def Tendencia_Covid_Pais():
 
     # Can be used wherever a "file-like" object is accepted:
         dataframe = pd.read_csv(uploaded_file)
+        dataframe.notna()
+        dataframe.fillna(0)
         st.write(dataframe)
+
 
         st.info("escoja Los campos que considere nescesarios para realizar la Tendencia de casos por pais")
 
@@ -86,6 +89,7 @@ def Tendencia_Covid_Pais():
         opcion1=var.upper()
         st.write(opcion1)
         st.write(dataframe[var])
+        dataframe[var]=dataframe[var].fillna(0)
 
         var1 = st.selectbox(
         'Seleccione el campo casos  o confirmited ',
@@ -93,6 +97,7 @@ def Tendencia_Covid_Pais():
         opcion2=var1.upper()
         st.write(opcion2)
         st.write(dataframe[var1])
+        dataframe[var1]=dataframe[var1].fillna(0)
 
 
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar la prediccion")
@@ -135,7 +140,7 @@ def Tendencia_Covid_Pais():
 
         plt.plot(prediction_space, reg.predict(prediction_space))
         plt.show()
-        plt.savefig('E:\\TendendiaCovid_pais.png')
+        plt.savefig('E:\\TendendiaCovid_paisLineal.png')
         st.pyplot()
         image7 = Image.open('tendenciaa.png')
 
@@ -151,18 +156,7 @@ def Tendencia_Covid_Pais():
             texto='La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   los casos en este pais  han ido aumentando considerablemente  alo largo de los ultimos reportes '
 
 
-        export_as_pdf = st.button("Export Report")
-        if export_as_pdf:
-            pdf = FPDF()
-            pdf.add_page()
-            pdf.set_xy(0, 0)
-            pdf.set_font('arial', 'B', 12)
-            pdf.multi_cell(200,10,txt=texto,align='J')
-            pdf.image('E:\\TendendiaCovid_pais.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
-            pdf.output('TendendiaCovid_pais.pdf', 'F')
 
-            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "testfile")
-            st.markdown(html, unsafe_allow_html=True)
 
 
 
@@ -206,14 +200,45 @@ def Tendencia_Covid_Pais():
 
         plt.plot(X_NEW,Y_NEW,color='red',linewidth=4)
         plt.grid()
-        plt.xlim(x_new_main,x__new_max)
-        plt.ylim(0,1000)
+
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
         plt.title("Tendecia de casos de COVID-19 en el pais "+pais+title)
+        texto2="Grafica Polinomial Tendecia de casos de COVID-19 en el pais "+pais+title
         plt.xlabel('#')
         plt.ylabel('Casos de COVID-19')
+        plt.savefig('E:\\TendendiaCovid_paisPolinomial.png')
         plt.show()
         st.pyplot()
+
+
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pd="Tendencia de casos  de Covid-19 en "+str(pais)
+            pdf.multi_cell(200,10,txt=titulo_pd,align='J')
+
+            pdf.set_font('Times', 'B', 12)
+
+
+
+
+
+            pdf.image('E:\\TendendiaCovid_paisLineal.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.multi_cell(200,10,txt=texto,align='J')
+
+            pdf.add_page()
+            pdf.multi_cell(200,10,txt=texto2,align='J')
+
+
+            pdf.image('E:\\TendendiaCovid_paisPolinomial.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+            pdf.output('TendendiaCovid_pais.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "TendendiaCovid_pais")
+            st.markdown(html, unsafe_allow_html=True)
 
 
 
@@ -252,13 +277,16 @@ def Prediccion_Infectados_Pais(icon='pred.svg'):
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
+
 
         var1 = st.selectbox(
         'Seleccione el campo casos  o confirmited ',
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar la prediccion")
@@ -311,16 +339,58 @@ def Prediccion_Infectados_Pais(icon='pred.svg'):
 
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
         plt.title("Prediccion de Infectados en el pais "+pais+title)
+        texto2='Mostrando una grafica polinomial de grado '+str(nb_degree)+' para la '+"Prediccion de Infectados en el pais "+pais+title
         plt.xlabel('#')
         plt.ylabel('Infectados por COVID-19')
+
+        plt.savefig('E:\\PrediccionInfectadosPais.png')
         plt.show()
         st.pyplot()
 
 
 
 
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 15)
+
+            pdf.multi_cell(200,10,txt=texto2,align='J')
 
 
+            pdf.image('E:\\PrediccionInfectadosPais.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+            pdf.output('PrediccionInfectadosPais.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "PrediccionInfectadosPais")
+            st.markdown(html, unsafe_allow_html=True)
+
+
+
+
+
+
+
+
+def pdf(texto,nombre_pdf,nombre_imagen):
+    export_as_pdf = st.button("Export Report")
+    if export_as_pdf:
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_xy(0, 0)
+        pdf.set_font('arial', 'B', 12)
+
+        pdf.multi_cell(200,10,txt=texto,align='J')
+
+
+        pdf.image(nombre_imagen, x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+        pdf.output(nombre_pdf, 'F')
+
+        html = create_download_link(pdf.output(dest="S").encode("latin-1"), nombre_pdf)
+        st.markdown(html, unsafe_allow_html=True)
 
 def Prediccion_Muertes_Departamento ():
 
@@ -354,6 +424,7 @@ def Prediccion_Muertes_Departamento ():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -361,9 +432,10 @@ def Prediccion_Muertes_Departamento ():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar la prediccion")
-        departamento = st.text_input('',placeholder='Escriba al pais al que quiere realizar el analisis')
+        departamento = st.text_input('',placeholder='Escriba el departamento al que quiere realizar el analisis')
 
         departamento_Escogido=[departamento]
         st.markdown('# Departamento escogido:'+departamento)
@@ -403,15 +475,32 @@ def Prediccion_Muertes_Departamento ():
 
         plt.plot(X_NEW,Y_NEW,color='green',linewidth=4)
         plt.grid()
-        plt.xlim(x_new_main,x__new_max)
 
-        plt.ylim(0,1000)
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
         plt.title("Prediccion de Muertes  en el Departamento  "+departamento+title)
+        texto2='Mostrando una grafica polinomial de grado '+str(nb_degree)+' para la '+"Prediccion de Muertes en el departamento  "+departamento+title
+
         plt.xlabel('#')
+        plt.savefig('E:\\PrediccionMuertesDepartamento.png')
         plt.ylabel('Muertes por COVID-19')
         plt.show()
         st.pyplot()
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 15)
+
+            pdf.multi_cell(200,10,txt=texto2,align='J')
+
+
+            pdf.image('E:\\PrediccionMuertesDepartamento.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+            pdf.output('PrediccionMuertesDepartamento.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "PrediccionMuertesDepartamento")
+            st.markdown(html, unsafe_allow_html=True)
 
 
 
@@ -452,6 +541,7 @@ def Analisis_Muertes_por_Pais():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -459,6 +549,7 @@ def Analisis_Muertes_por_Pais():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar la prediccion")
@@ -475,6 +566,7 @@ def Analisis_Muertes_por_Pais():
         muertes_pais=casos_pais[var1].sum()
 
         st.markdown('## Las muertes en este pais ascienden a la cantidad de :')
+        texto1='Las muertes en este pais ascienden a la cantidad de' +str(muertes_pais)
         st.write(muertes_pais)
 
         tamanio=casos_pais[var1].__len__()
@@ -509,7 +601,7 @@ def Analisis_Muertes_por_Pais():
 
         plt.plot(prediction_space, reg.predict(prediction_space))
         plt.legend(('Muertes por covid-19','Linear Regression'), loc='upper right')
-
+        plt.savefig('E:\\AnalisisMuertePais.png')
         plt.show()
         st.pyplot()
         st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
@@ -519,8 +611,34 @@ def Analisis_Muertes_por_Pais():
 
         if reg.coef_ < 0:
             st.info('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  las muertes por COVID-19  en ese pais han ido  disminuyendo considerablemente ')
+            texto2='La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  las muertes por COVID-19  en ese pais han ido  disminuyendo considerablemente '
         else:
             st.error('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   las muertes por COVID-19 en este pais han ido en aumento  ')
+            texto2='La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   las muertes por COVID-19 en este pais han ido en aumento  '
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo="Analisis de Muertes en el pais "+pais
+            pdf.multi_cell(200,20,txt=titulo,align='J')
+            pdf.set_font('arial', 'B', 12)
+            pdf.multi_cell(200,20,txt=texto1,align='J')
+
+
+            pdf_ecuacion="La ecuacion de la recta es "+str(ecuacion)
+
+            pdf.multi_cell(200,10,txt=pdf_ecuacion,align='J')
+
+
+            pdf.image('E:\\AnalisisMuertePais.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.multi_cell(200,10,txt=texto2,align='J')
+            pdf.output('AnalisisMuertePais.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "AnalisisMuertePais")
+            st.markdown(html, unsafe_allow_html=True)
+
 
 
 
@@ -560,6 +678,7 @@ def Tendencia_casos_Departamento():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -567,6 +686,7 @@ def Tendencia_casos_Departamento():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar la prediccion")
@@ -599,15 +719,18 @@ def Tendencia_casos_Departamento():
         plt.ylabel('CASOS_COVID')
         plt.xlabel('#')
         plt.plot(prediction_space, reg.predict(prediction_space))
+        plt.savefig('E:\\TendenciaCasosDepartamento.png')
+
         plt.show()
         st.pyplot()
         st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
         st.info(reg.coef_)
         if reg.coef_ < 0:
             st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  los casos de covid 19 han ido disminuyendo considerablemente en este Estado  ')
+            texto='La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  los casos de covid 19 han ido disminuyendo considerablemente en este Estado  '
         else:
             st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   los casos en este pais  han ido aumentando considerablemente  en este Estado alo largo de los ultimos reportes ')
-
+            texto='La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   los casos en este pais  han ido aumentando considerablemente  en este Estado alo largo de los ultimos reportes '
 
         st.markdown('## Grafica Polinomial  ')
         number = st.number_input('Inserte el grado  del que desea hacer la grafica  ')
@@ -642,14 +765,45 @@ def Tendencia_casos_Departamento():
 
         plt.plot(X_NEW,Y_NEW,color='red',linewidth=4)
         plt.grid()
-        plt.xlim(x_new_main,x__new_max)
-        plt.ylim(0,1000)
+
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
         plt.title("Tendecia de casos de COVID-19 en el Estado "+departamento+title)
+        texto2="Tendecia de casos de COVID-19 en el Estado "+departamento+title
         plt.xlabel('#')
         plt.ylabel('Casos de COVID-19')
+        plt.savefig('E:\\TendenciaCasosDepartamentoPolinomial.png')
         plt.show()
         st.pyplot()
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pd="Tendecia de casos de COVID-19 en el Estado "+departamento
+            pdf.multi_cell(200,10,txt=titulo_pd,align='J')
+
+            pdf.set_font('Times', 'B', 12)
+
+
+
+
+
+            pdf.image('E:\\TendenciaCasosDepartamento.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.multi_cell(200,10,txt=texto,align='J')
+
+            pdf.add_page()
+            pdf.multi_cell(200,10,txt=texto2,align='J')
+
+
+            pdf.image('E:\\TendenciaCasosDepartamentoPolinomial.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+            pdf.output('TendenciaCasosDepartamento.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "TendenciaCasosDepartamento")
+            st.markdown(html, unsafe_allow_html=True)
+
+
 
 
     image = Image.open('tendenciaa.png')
@@ -687,6 +841,7 @@ def Prediccion_Muertes_dia():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -694,6 +849,7 @@ def Prediccion_Muertes_dia():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar la prediccion")
@@ -762,11 +918,35 @@ def Prediccion_Muertes_dia():
         plt.grid()
 
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
-        plt.title("Prediccion de Muertes por Covid en el pais "+pais+title)
+        texto2='Mostrando una grafica polinomial de grado '+str(nb_degree)+' para la '+"Prediccion de Infectados  por dia en el pais "+pais+title
+
+        plt.title("Prediccion de Muertes por dia casuados por el virus por Covid en el pais "+pais+title)
         plt.xlabel('#dias')
         plt.ylabel('Muertes por COVID-19')
+        plt.savefig('E:\\Prediccion_casos_Dia.png')
         plt.show()
         st.pyplot()
+
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 15)
+
+            pdf.multi_cell(200,10,txt=texto2,align='J')
+
+
+            pdf.image('E:\\Prediccion_casos_Dia.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+            pdf.output('Prediccion_casos_Dia.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "Prediccion_casos_Dia")
+            st.markdown(html, unsafe_allow_html=True)
+
+
+
+
 
 def Factores_Muertes():
     mage12 = Image.open('factores_muerte.png')
@@ -789,12 +969,13 @@ def Factores_Muertes():
         dataframe = pd.read_csv(uploaded_file)
         st.write(dataframe)
 
-        st.info("escoja Los campos que considere nescesarios para realizar la Comparacion de Vacunacion entre 2 paises ")
+        st.info("escoja Los campos que considere nescesarios para ver los factores de muerted de la pandemia")
         var = st.selectbox(
         'Seleccione el campo Country o pais ',
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar el analisis")
         pais_v = st.text_input('',placeholder='Escriba al pais al que quiere realizar el analisis')
@@ -804,7 +985,7 @@ def Factores_Muertes():
         st.write(pais_analisis)
 
         options = st.multiselect(
-            'Escoja los paises  o Continentes',
+            'Escoja los factores',
             dataframe.columns.drop_duplicates())
         st.write('opciones escogidas')
         st.write(options)
@@ -839,9 +1020,48 @@ def Factores_Muertes():
         plt.title("Factores de muertes en el PAIS :"+pais_v)
         plt.ylabel('Numero de muertes  en el  '+pais_v)
         plt.xlabel('#Factores de muertes')
+        plt.savefig('E:\\Factores_Muerte.png')
         #plt.plot(prediction_space, reg.predict(prediction_space))
         plt.show()
         st.pyplot()
+
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pd="FACTORES DE MUERTE POR COVID-19"+"en el pais "+pais_v
+
+
+            pdf.multi_cell(200,10,txt=titulo_pd,align='J')
+            pdf.set_font('Times', 'B', 15)
+            pdf.multi_cell(200,10,txt="FACTOTRES",align='J')
+            pdf.set_font('Times', 'B', 12)
+            for i in factor.itertuples():
+                pdf.multi_cell(200,10,txt="-Factor",align='J')
+                pdf.multi_cell(200,10,txt=str(i.Factor),align='J')
+                pdf.multi_cell(200,10,txt="-Numero de Muertes",align='J')
+                pdf.multi_cell(200,10,txt=str(i.NumerodeMuertes),align='J')
+
+
+
+
+
+
+
+
+
+
+            pdf.image('E:\\Factores_Muerte.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+            pdf.output('Factores_Muerte.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "Factores_Muerte")
+            st.markdown(html, unsafe_allow_html=True)
+
+
+
 
 
         #st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
@@ -892,6 +1112,7 @@ def Prediccion_Muertes_Pais():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -899,6 +1120,7 @@ def Prediccion_Muertes_Pais():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar la prediccion")
@@ -947,11 +1169,35 @@ def Prediccion_Muertes_Pais():
         plt.grid()
 
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
-        plt.title("Prediccion de Muertes por Covid en el pais "+pais+title)
+        plt.title("Prediccion de Muertes  causados por el  Covid en el pais "+pais+title)
+
+        texto2=' Grafica polinomial de grado '+str(nb_degree)+' para la '+"Prediccion de Muertes  causados por el  Covid en el pais "+pais+title
+
         plt.xlabel('#')
         plt.ylabel('Muertes por COVID-19')
+
+        plt.savefig('E:\\PrediccionMuertes_por_Covid_en_Pais.png')
         plt.show()
         st.pyplot()
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+
+            pdf.multi_cell(200,10,txt=texto2,align='J')
+
+
+            pdf.image('E:\\PrediccionMuertes_por_Covid_en_Pais.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+            pdf.output('PrediccionMuertes_por_Covid_en_Pais.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "PrediccionMuertes_por_Covid_en_Pais")
+            st.markdown(html, unsafe_allow_html=True)
+
+
+
 
 def Muertes_Edad():
     image51 = Image.open('muertes_promedio_edad.png')
@@ -980,6 +1226,7 @@ def Muertes_Edad():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -987,6 +1234,7 @@ def Muertes_Edad():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
         var2 = st.selectbox(
@@ -994,6 +1242,7 @@ def Muertes_Edad():
         (dataframe.columns))
         opcion3=var2.upper()
         st.write(opcion3)
+        dataframe[var2]=dataframe[var2].fillna(0)
         st.write(dataframe[var2])
 
 
@@ -1003,7 +1252,8 @@ def Muertes_Edad():
         (dataframe.columns))
         opcion4=var3.upper()
         st.write(opcion4)
-        st.write(dataframe[var2])
+        dataframe[var3]=dataframe[var3].fillna(0)
+        st.write(dataframe[var3])
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar el promedio")
         pais_v = st.text_input('',placeholder='Escriba al pais al que quiere realizar el analisis')
         pais_Escogido_v=[pais_v]
@@ -1025,6 +1275,7 @@ def Muertes_Edad():
         pd_Edades=pd.DataFrame({"edades":edades
 
                 })
+        st.write(df_edad)
         for row in pd_Edades.itertuples():
             edad_Calc=[row.edades]
             calc=data_pais[data_pais[var3].isin(edad_Calc)]
@@ -1038,58 +1289,96 @@ def Muertes_Edad():
 
 
 
+        arr_prueba=[]
 
+        muertes2=pd.DataFrame({"m":data_pais[var2]
 
+            })
+
+        muerte3=[]
+        for row in muertes2.itertuples():
+            if pd.isnull(row.m)==False:
+                muerte3.append(row.m)
 
         promedios = pd.DataFrame({"Muertes":muertes,
                 "Casos":casos,"Edad":edad,"PromediodeMuertes":promedio
                 })
 
         st.table(promedios)
+        tamanio=muerte3.__len__()
 
-
-        number = st.number_input('Inserte el grado  del que desea hacer la grafica  prediccion')
-
-        tamanio=edad.__len__()
         arreglo=[]
         for i in range (0,tamanio):
             arreglo.append(i)
-        X=np.asarray(promedios.Casos)
-        Y=promedios.Edad
 
-        X=X[:,np.newaxis]
-        Y=Y[:,np.newaxis]
-        nb_degree=int(number)
-        polynomial_features=PolynomialFeatures(degree=nb_degree)
+
+
+
+        X=np.asarray(arreglo).reshape(-1,1)
+
+
+        Y=np.asarray(muerte3).reshape(-1,1)
         st.set_option('deprecation.showPyplotGlobalUse', False)
-        X_TRANSF=polynomial_features.fit_transform(X)
 
-        model= LinearRegression()
-        model.fit(X_TRANSF,Y)
 
-        Y_NEW = model.predict(X_TRANSF)
-        rmse=np.sqrt(mean_squared_error(Y,Y_NEW))
 
-        r2=r2_score(Y,Y_NEW)
-        x_new_main=0.0
-        x__new_max=50.0
 
-        X_NEW=np.linspace(x_new_main,x__new_max,50)
+        reg = LinearRegression()
+        reg.fit(X, Y)
+        prediction_space = np.linspace(min(X), max(X)).reshape(-1, 1)
+        plt.scatter(X, Y, color='red')
 
-        X_NEW=X_NEW[:,np.newaxis]
-        X_NEW_TRANSF =polynomial_features.fit_transform(X_NEW)
+        plt.title("TENDENCIA DE muertes por covid19 DEL PAIS:"+pais_v)
+        plt.ylabel('muertes por covid-19')
+        plt.xlabel('#')
 
-        Y_NEW=model.predict(X_NEW_TRANSF)
 
-        plt.plot(X_NEW,Y_NEW,color='red',linewidth=4)
-        plt.grid()
-
-        title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
-        plt.title("Muertes por covid-19  en el pais  "+pais_v+title)
-        plt.xlabel('#casos de covid 19')
-        plt.ylabel('Muertes por COVID-19')
+        plt.plot(prediction_space, reg.predict(prediction_space))
         plt.show()
+        plt.savefig('E:\\Tendencia_MuertesCovid19.png')
         st.pyplot()
+        image7 = Image.open('tendenciaa.png')
+
+        st.image(image7, width=1200,use_column_width='auto')
+        st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
+        st.info(reg.coef_)
+        if reg.coef_ < 0:
+
+            st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  las muertes de covid 19 han ido disminuyendo considerablemente ')
+            texto='La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  las muertes de covid 19 han ido disminuyendo considerablemente '
+        else:
+            st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   las muertes en este pais  han ido aumentando considerablemente  alo largo de los ultimos reportes ')
+            texto='La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   las muertes en este pais  han ido aumentando considerablemente  alo largo de los ultimos reportes '
+
+
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pd="Muertes promedio por casos confirmados y edad de COVID-19 "+"en el pais "+pais_v
+
+
+            pdf.multi_cell(200,10,txt=titulo_pd,align='J')
+
+            for i in promedios.itertuples():
+
+                pdf.set_font('Times', 'B', 10)
+                TextoInfo=" Muertes:"+" "+str(i.Muertes)+"  Casos COVID-19:"+str(i.Casos)+"  EDAD"+str(i.Edad)+"  Promedio Muertes"+str(i.PromediodeMuertes)
+
+                pdf.multi_cell(200,10,txt=TextoInfo,align='J')
+            pdf.image('E:\\Tendencia_MuertesCovid19.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.set_font('Times', 'B', 12)
+            pdf.multi_cell(200,10,txt=texto,align='J')
+            pdf.output('Muertespromedioporcasosconfirmados.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "Muertespromedioporcasosconfirmados")
+            st.markdown(html, unsafe_allow_html=True)
+
+
+
+
 
 
 def Tendencia_Vacunancion_Pais():
@@ -1119,6 +1408,7 @@ def Tendencia_Vacunancion_Pais():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -1126,6 +1416,7 @@ def Tendencia_Vacunancion_Pais():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
 
@@ -1139,20 +1430,31 @@ def Tendencia_Vacunancion_Pais():
         pais_Escogido_v=[pais_v]
         st.markdown('# Pais escogido:'+pais_v)
 
+
         casos_pais_v=dataframe[dataframe[var].isin(pais_Escogido_v)]
+
+        vac=pd.DataFrame({"v":casos_pais_v[var1]
+
+            })
+
+        vacunacionar=[]
+        for row in vac.itertuples():
+            if pd.isnull(row.v)==False:
+                vacunacionar.append(row.v)
+
         st.write(casos_pais_v)
-        tamanio=casos_pais_v[var1].__len__()
+        tamanio=vacunacionar.__len__()
         arreglo=[]
+
         for i in range (0,tamanio):
             arreglo.append(i)
-
 
 
 
         X=np.asarray(arreglo).reshape(-1,1)
 
 
-        Y=casos_pais_v[var1]
+        Y=np.asarray(vacunacionar).reshape(-1,1)
         st.set_option('deprecation.showPyplotGlobalUse', False)
         reg = LinearRegression()
         reg.fit(X, Y)
@@ -1163,6 +1465,8 @@ def Tendencia_Vacunancion_Pais():
         plt.ylabel('VACUNACION en '+pais_v)
         plt.xlabel('#')
         plt.plot(prediction_space, reg.predict(prediction_space))
+
+        plt.savefig('E:\\Tendencia_Vacunacion_paisLineal.png')
         plt.show()
         st.pyplot()
         image7 = Image.open('tendenciaa.png')
@@ -1171,12 +1475,13 @@ def Tendencia_Vacunancion_Pais():
         st.info(reg.coef_)
         if reg.coef_ < 0:
             st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+pais_v+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   ')
+            texto='La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+pais_v+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   '
         else:
             st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion')
-
+            texto='La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion'
         st.write('El grado seria ', number)
         X2=np.asarray(arreglo)
-        Y2=casos_pais_v[var1]
+        Y2=np.asarray(vacunacionar)
 
         X2=X2[:,np.newaxis]
         Y2=Y2[:,np.newaxis]
@@ -1205,14 +1510,45 @@ def Tendencia_Vacunancion_Pais():
 
         plt.plot(X_NEW,Y_NEW,color='red',linewidth=4)
         plt.grid()
-        plt.xlim(x_new_main,x__new_max)
-        plt.ylim(0,1000)
+
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
         plt.title("Tendecia de Vacunacion de COVID-19 en el pais "+pais_v+title)
+        texto2='Grafica polinomial de la Tendencia de vacunacion de COVID-19 en '+pais_v+title
         plt.xlabel('#')
         plt.ylabel('Vacunacion de COVID-19')
         plt.show()
+        plt.savefig('E:\\Tendencia_Vacunacion_paisPolinomial.png')
         st.pyplot()
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pd="Tendencia de Vacunacion en el pais  "+str(pais_v)
+            pdf.multi_cell(200,10,txt=titulo_pd,align='J')
+
+            pdf.set_font('Times', 'B', 12)
+
+
+
+
+
+            pdf.image('E:\\Tendencia_Vacunacion_paisLineal.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.multi_cell(200,10,txt=texto,align='J')
+
+            pdf.add_page()
+            pdf.multi_cell(200,10,txt=texto2,align='J')
+
+
+            pdf.image('E:\\Tendencia_Vacunacion_paisPolinomial.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+            pdf.output('Tendencia_VacunacionPais.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "Tendencia_VacunacionPais")
+            st.markdown(html, unsafe_allow_html=True)
+
+
 
 
 
@@ -1244,6 +1580,7 @@ def Comparacion_Vacunacion_Pais():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -1251,6 +1588,7 @@ def Comparacion_Vacunacion_Pais():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
         st.info(" si escogio los campos correctamente  proceda a escoger los paises  para  realizar la comparacion")
 
@@ -1271,6 +1609,28 @@ def Comparacion_Vacunacion_Pais():
 
         vacunacion_pais2=info_pais2[var1].sum()
 
+        vac1=pd.DataFrame({"m":info_pais[var1]
+
+            })
+
+        varAr=[]
+        for row in vac1.itertuples():
+            if pd.isnull(row.m)==False:
+                varAr.append(row.m)
+
+
+
+        vac12=pd.DataFrame({"m":info_pais2[var1]
+
+            })
+
+        varAr2=[]
+        for row in vac12.itertuples():
+            if pd.isnull(row.m)==False:
+                varAr2.append(row.m)
+
+
+
 
         grafica=pd.DataFrame({
             'vacunacion':[vacunacion_pais1,vacunacion_pais2]
@@ -1286,14 +1646,14 @@ def Comparacion_Vacunacion_Pais():
         col_pais1,col_pais2=st.columns(2)
         with col_pais1:
             st.write("Tendencia de Vacunacion de  "+options[0])
-            tamanio=info_pais[var1].__len__()
+            tamanio=varAr.__len__()
             arreglo=[]
             for i in range (0,tamanio):
                 arreglo.append(i)
-                X=np.asarray(arreglo).reshape(-1,1)
+            X=np.asarray(arreglo).reshape(-1,1)
 
 
-            Y=info_pais[var1]
+            Y=np.asarray(varAr).reshape(-1,1)
             st.set_option('deprecation.showPyplotGlobalUse', False)
             reg = LinearRegression()
             reg.fit(X, Y)
@@ -1304,6 +1664,7 @@ def Comparacion_Vacunacion_Pais():
             plt.ylabel('VACUNACION en '+options[0])
             plt.xlabel('#')
             plt.plot(prediction_space, reg.predict(prediction_space))
+            plt.savefig('E:\\TendenciaVacunacionPais1.png')
             plt.show()
             st.pyplot()
             image7 = Image.open('tendenciaa.png')
@@ -1312,31 +1673,33 @@ def Comparacion_Vacunacion_Pais():
             st.info(reg.coef_)
             if reg.coef_ < 0:
                 st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+options[0]+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   ')
+                texto='La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+options[0]+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   '
             else:
                 st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion')
-
+                texto='La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion'
 
 
         with col_pais2:
             st.write("Tendencia de Vacunacion de"+options[1])
-            tamanio=info_pais2[var1].__len__()
+            tamanio=varAr2.__len__()
             arreglo=[]
             for i in range (0,tamanio):
                 arreglo.append(i)
-                X=np.asarray(arreglo).reshape(-1,1)
+            X=np.asarray(arreglo).reshape(-1,1)
 
 
-            Y=info_pais2[var1]
+            Y=np.asarray(varAr2).reshape(-1,1)
             st.set_option('deprecation.showPyplotGlobalUse', False)
             reg = LinearRegression()
             reg.fit(X, Y)
             prediction_space = np.linspace(min(X), max(X)).reshape(-1, 1)
             plt.scatter(X, Y, color='blue')
 
-            plt.title("TENDENCIA DE VACUNACION  DEL PAIS:"+options[0])
+            plt.title("TENDENCIA DE VACUNACION  DEL PAIS:"+options[1])
             plt.ylabel('VACUNACION en '+options[0])
             plt.xlabel('#')
             plt.plot(prediction_space, reg.predict(prediction_space))
+            plt.savefig('E:\\TendenciaVacunacionPais2.png')
             plt.show()
             st.pyplot()
             image7 = Image.open('tendenciaa.png')
@@ -1345,10 +1708,43 @@ def Comparacion_Vacunacion_Pais():
             st.info(reg.coef_)
             if reg.coef_ < 0:
                 st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+options[0]+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   ')
+                texto2='La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+options[0]+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   '
             else:
                 st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion')
+                texto2='La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion'
+
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pd="Comparacion Vacunacion entre   "+str(options[0])+" VS" +str(options[1])
+            pdf.multi_cell(200,10,txt=titulo_pd,align='J')
+
+            pdf.set_font('Times', 'B', 12)
+            tendencia="Tendencia  de Vacunacion en el pais "+str(options[0])
+            pdf.multi_cell(200,10,txt=tendencia,align='J')
 
 
+        #plt.savefig('E:\\TendenciaVacunacionPais1.png')
+
+
+            pdf.image('E:\\TendenciaVacunacionPais1.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.multi_cell(200,10,txt=texto,align='J')
+
+            pdf.add_page()
+
+
+            tendencia2="Tendencia  de Vacunacion en el pais "+str(options[1])
+            pdf.multi_cell(200,10,txt=tendencia2,align='J')
+
+            pdf.image('E:\\TendenciaVacunacionPais2.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.multi_cell(200,10,txt=texto2,align='J')
+            pdf.output('Comparacion_Vacunacion_2PAISES.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "Comparacion_Vacunacion_2PAISES")
+            st.markdown(html, unsafe_allow_html=True)
 
 def Analisis_Comparativo_entre2_pais_contienente():
     image51 = Image.open('comparacion_pais_contienente.png')
@@ -1377,6 +1773,7 @@ def Analisis_Comparativo_entre2_pais_contienente():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -1384,6 +1781,7 @@ def Analisis_Comparativo_entre2_pais_contienente():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
         var2 = st.selectbox(
@@ -1391,12 +1789,14 @@ def Analisis_Comparativo_entre2_pais_contienente():
         (dataframe.columns))
         opcion3=var2.upper()
         st.write(opcion3)
+        dataframe[var2]=dataframe[var2].fillna(0)
         st.write(dataframe[var2])
         var3 = st.selectbox(
         'Seleccione el campo pruebas  ',
         (dataframe.columns))
         opcion4=var3.upper()
         st.write(opcion4)
+        dataframe[var3]=dataframe[var3].fillna(0)
         st.write(dataframe[var3])
 
         var4 = st.selectbox(
@@ -1404,6 +1804,7 @@ def Analisis_Comparativo_entre2_pais_contienente():
         (dataframe.columns))
         opcion5=var4.upper()
         st.write(opcion5)
+        dataframe[var4]=dataframe[var4].fillna(0)
         st.write(dataframe[var4])
 
         st.info(" si escogio los campos correctamente proceda a escoger los paises o contienentes para el analisis")
@@ -1429,9 +1830,9 @@ def Analisis_Comparativo_entre2_pais_contienente():
             muertes.append(lugar[var4].sum())
             vacunacion.append(lugar[var1].sum())
 
-            compracion = pd.DataFrame({"Lugar":pais,
-                "CasosCovid-19":casos,"Pruebas":pruebas,"Vacunas":vacunacion,"Muertes":muertes
-                })
+        compracion = pd.DataFrame({"Lugar":pais,
+            "CasosCovid":casos,"Pruebas":pruebas,"Vacunas":vacunacion,"Muertes":muertes
+            })
 
 
         st.write(compracion)
@@ -1464,6 +1865,7 @@ def Analisis_Comparativo_entre2_pais_contienente():
         plt.ylabel('VACUNACION en '+pais_v)
         plt.xlabel('#')
         plt.plot(prediction_space, reg.predict(prediction_space))
+        plt.savefig('E:\\TendenciaVacunacionC.png')
         plt.show()
         st.pyplot()
         st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
@@ -1495,6 +1897,7 @@ def Analisis_Comparativo_entre2_pais_contienente():
         plt.xlabel('#')
         plt.plot(prediction_space, reg.predict(prediction_space))
         plt.show()
+        plt.savefig('E:\\TendenciaMuerteC.png')
         st.pyplot()
         st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
         st.info(reg.coef_)
@@ -1536,7 +1939,9 @@ def Analisis_Comparativo_entre2_pais_contienente():
 
         Y_NEW=model.predict(X_NEW_TRANSF)
 
+
         plt.plot(X_NEW,Y_NEW,color='coral',linewidth=4)
+
         plt.grid()
 
 
@@ -1545,8 +1950,48 @@ def Analisis_Comparativo_entre2_pais_contienente():
         plt.title("Prediccion de Infectados en  "+pais_v+title)
         plt.xlabel('#')
         plt.ylabel('Infectados por COVID-19')
+        plt.savefig('E:\\PrediccionCasosC.png')
         plt.show()
         st.pyplot()
+
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+
+            pdf.multi_cell(200,10,txt="Analisis Comparativo entre 2 o mas continentes ",align='J')
+
+            for i in compracion.itertuples():
+                pdf.set_font('Times', 'B', 12)
+                reporte="Lugar: "+i.Lugar+" Casos COVID-19"+str(i.CasosCovid)+" Pruebas Covid-19"+ str(i.Pruebas)+"Vacunacion "+str(i.Vacunas)+"Muertes"+str(i.Muertes)
+                pdf.multi_cell(200,10,txt=reporte,align='J')
+
+
+
+
+            pdf.multi_cell(200,10,txt="Tendencia de Vacunacion en el pais escogido",align='J')
+
+            pdf.image('E:\\TendenciaVacunacionC.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.multi_cell(200,10,txt="Tendencia de Muertes por COVID-19 en el pais escogido",align='J')
+
+            pdf.image('E:\\TendenciaMuerteC.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+            pdf.multi_cell(200,10,txt="Prediccion de casos de  COVID-19 en el pais escogido",align='J')
+            pdf.add_page()
+            pdf.image('E:\\PrediccionCasosC.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+            pdf.output('Comparacion_entre_2_MAS.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "Comparacion_entre_2_MAS.pdf")
+            st.markdown(html, unsafe_allow_html=True)
+
+
+
+
+
+
 
 
 
@@ -1579,6 +2024,7 @@ def indice_progresion():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         dias = st.number_input('Inserte numero de dias  para poder  ver la progresion de la pandemia')
@@ -1603,6 +2049,7 @@ def indice_progresion():
                 total_casos=int(i.casos)+total_casos
 
         st.info('En '+str(tamanio)+' dias han habido '+str(total_casos)+' casos de COVID-19')
+        info='En '+str(tamanio)+' dias han habido '+str(total_casos)+' casos de COVID-19'
 
         number = st.number_input('Inserte el grado  del que desea hacer la grafica de casos de covid-19')
         st.write('El grado seria ', number)
@@ -1641,10 +2088,38 @@ def indice_progresion():
 
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
         plt.title("Progresion de la pandemia de COVID-19"+title)
+        titulo="Progresion de la pandemia de COVID-19"+title
         plt.xlabel('#dias')
         plt.ylabel('Casos de  COVID-19')
+        plt.savefig('E:\\ProgresionPandemia.png')
         plt.show()
         st.pyplot()
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+
+            pdf.multi_cell(200,10,txt="Indice de Progresion de la pandemia",align='J')
+
+            pdf.set_font('Times', 'B', 12)
+
+            pdf.multi_cell(200,10,txt=info,align='J')
+            pdf.set_font('Times', 'B', 12)
+
+            pdf.multi_cell(200,10,txt=titulo,align='J')
+
+
+            pdf.image('E:\\ProgresionPandemia.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+            pdf.output('ProgresionPandemia.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "ProgresionPandemia")
+            st.markdown(html, unsafe_allow_html=True)
+
+
+
 
 
 
@@ -1675,6 +2150,7 @@ def Tasa_Mortalidad_Pais():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -1682,6 +2158,7 @@ def Tasa_Mortalidad_Pais():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
         var2 = st.selectbox(
@@ -1689,6 +2166,7 @@ def Tasa_Mortalidad_Pais():
         (dataframe.columns))
         opcion3=var2.upper()
         st.write(opcion3)
+        dataframe[var2]=dataframe[var2].fillna(0)
         st.write(dataframe[var2])
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar la tasa de mortalidad por covid-19")
         pais_v = st.text_input('',placeholder='Escriba al pais al que quiere realizar el analisis')
@@ -1705,7 +2183,7 @@ def Tasa_Mortalidad_Pais():
         tasa=muertes_al_Dia/casos_al_Dia
         st.write(tasa*100)
         st.info('Segun los datos obtenidos durante el analisis se obtuvo que el numero de casos de COVID-19 en el pais '+pais_v+'asciende a la cifra de '+str(casos_al_Dia)+' y lastimosamente la cifra de fallecidos asciende a la cantidad de '+ str(muertes_al_Dia)+' y para calcular la tasa de mortalidad se hace uso de la fórmula de Tasa de Mortalidad por Infección (IFR) = Muertes / Casos  que en este caso   seria: '+str(round(tasa*100,2))+'%')
-
+        info='Segun los datos obtenidos durante el analisis se obtuvo que el numero de casos de COVID-19 en el pais '+pais_v+'asciende a la cifra de '+str(casos_al_Dia)+' y lastimosamente la cifra de fallecidos asciende a la cantidad de '+ str(muertes_al_Dia)+' y para calcular la tasa de mortalidad se hace uso de la fórmula de Tasa de Mortalidad por Infección (IFR) = Muertes / Casos  que en este caso   seria: '+str(round(tasa*100,2))+'%'
         tamanio=casos_pais_v[var1].__len__()
         arreglo=[]
         for i in range (0,tamanio):
@@ -1725,7 +2203,7 @@ def Tasa_Mortalidad_Pais():
         reg.fit(X, Y)
         prediction_space = np.linspace(min(X), max(X)).reshape(-1, 1)
         plt.scatter(X, Y, color='cyan')
-        plt.title("TENDENCIA DE CASOS DEL ESTADO:"+pais_v)
+        plt.title("TENDENCIA DE CASOS DEL pais:"+pais_v)
         plt.ylabel('CASOS_COVID')
         plt.xlabel('#')
         plt.plot(prediction_space, reg.predict(prediction_space))
@@ -1759,10 +2237,11 @@ def Tasa_Mortalidad_Pais():
         reg.fit(X, Y)
         prediction_space = np.linspace(min(X), max(X)).reshape(-1, 1)
         plt.scatter(X, Y, color='cyan')
-        plt.title("TENDENCIA DE MUERTE DEL ESTADO:"+pais_v)
+        plt.title("TENDENCIA DE MUERTE DEL pais:"+pais_v)
         plt.ylabel('MUERTE POR COVID-19')
         plt.xlabel('#')
         plt.plot(prediction_space, reg.predict(prediction_space))
+        plt.savefig('E:\\TasaMortalidad.png')
         plt.show()
         st.pyplot()
         st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
@@ -1771,6 +2250,32 @@ def Tasa_Mortalidad_Pais():
             st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  los casos de covid 19 han ido disminuyendo considerablemente en este Estado  ')
         else:
             st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   los casos en este pais  han ido aumentando considerablemente  en este Estado alo largo de los ultimos reportes ')
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pdf="Tasa de Mortalidad del pais "+pais_v
+            pdf.multi_cell(200,10,txt=titulo_pdf,align='J')
+
+            pdf.set_font('Times', 'B', 12)
+
+            pdf.multi_cell(200,10,txt=info,align='J')
+            pdf.set_font('Times', 'B', 12)
+
+            pdf.multi_cell(200,10,txt="Tendencia de muerte",align='J')
+
+
+            pdf.image('E:\\TasaMortalidad.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+            pdf.output('TasaMortalidad.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "TasaMortalidad")
+            st.markdown(html, unsafe_allow_html=True)
+
+
+
 def prediccion_mundial():
     image113 = Image.open('predicciones_mundiales.png')
 
@@ -1798,6 +2303,7 @@ def prediccion_mundial():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -1805,6 +2311,7 @@ def prediccion_mundial():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
 
@@ -1848,6 +2355,8 @@ def prediccion_mundial():
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
         plt.title("Prediccion de   casos de COVID-19 alrededor del mundo "+title)
         plt.xlabel('#')
+        titulo1="Prediccion de   casos de COVID-19 alrededor del mundo grafica:"+title
+        plt.savefig('E:\\Prediccion_casos_en_el_Mundo.png')
         plt.ylabel('Casos de COVID-19')
         plt.show()
         st.pyplot()
@@ -1889,12 +2398,43 @@ def prediccion_mundial():
         plt.plot(X_NEW2,Y_NEW2,color='red',linewidth=4)
         plt.grid()
 
-        title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
-        plt.title("Prediccion de   muertes de COVID-19 alrededor del mundo "+title)
+        title2='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
+        plt.title("Prediccion de   muertes de COVID-19 alrededor del mundo "+title2)
+        titulo2="Prediccion de   muertes de COVID-19 alrededor del mundo grafica: "+title
         plt.xlabel('#')
         plt.ylabel('Muertes de COVID-19')
+        plt.savefig('E:\\Prediccion_Muertes_en_el_Mundo.png')
         plt.show()
         st.pyplot()
+
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pdf="Prediccion de casos de COVID-19 alrededor del mundo "
+            pdf.multi_cell(200,10,txt=titulo_pdf,align='J')
+
+
+            pdf.set_font('Times', 'B', 12)
+
+            pdf.multi_cell(200,10,txt=titulo1,align='J')
+
+
+            pdf.image('E:\\Prediccion_casos_en_el_Mundo.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+            pdf.multi_cell(200,10,txt=titulo2,align='J')
+
+
+            pdf.image('E:\\Prediccion_Muertes_en_el_Mundo.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+            pdf.output('Predicciones_Mundiales.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "Predicciones_Mundiales")
+            st.markdown(html, unsafe_allow_html=True)
+
+
 
 
 def Comparacion_Infectados_Vacunados_Pais():
@@ -1927,6 +2467,7 @@ def Comparacion_Infectados_Vacunados_Pais():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -1934,6 +2475,7 @@ def Comparacion_Infectados_Vacunados_Pais():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
         var3 = st.selectbox(
@@ -1941,6 +2483,7 @@ def Comparacion_Infectados_Vacunados_Pais():
         (dataframe.columns))
         opcion2=var3.upper()
         st.write(opcion2)
+        dataframe[var3]=dataframe[var3].fillna(0)
         st.write(dataframe[var3])
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar la comparacion")
         pais = st.text_input('',placeholder='Escriba al pais al que quiere realizar el analisis')
@@ -2033,6 +2576,7 @@ def Tendencia_Infectados_dia():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -2040,6 +2584,7 @@ def Tendencia_Infectados_dia():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar la prediccion")
@@ -2164,6 +2709,7 @@ def Comportamiento_Casos_Municipio():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -2171,6 +2717,7 @@ def Comportamiento_Casos_Municipio():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
         var2 = st.selectbox(
@@ -2178,6 +2725,7 @@ def Comportamiento_Casos_Municipio():
         (dataframe.columns))
         opcion3=var2.upper()
         st.write(opcion3)
+        dataframe[var2]=dataframe[var2].fillna(0)
         st.write(dataframe[var2])
 
 
@@ -2187,6 +2735,7 @@ def Comportamiento_Casos_Municipio():
         (dataframe.columns))
         opcion4=var3.upper()
         st.write(opcion4)
+        dataframe[var3]=dataframe[var3].fillna(0)
         st.write(dataframe[var3])
 
 
@@ -2196,6 +2745,7 @@ def Comportamiento_Casos_Municipio():
         (dataframe.columns))
         opcion5=var4.upper()
         st.write(opcion5)
+        dataframe[var4]=dataframe[var4].fillna(0)
         st.write(dataframe[var4])
 
 
@@ -2309,6 +2859,7 @@ def prediccion_ultimo_dia():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -2316,6 +2867,7 @@ def prediccion_ultimo_dia():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar la prediccion")
@@ -2417,6 +2969,7 @@ def prediccion_casos_anio():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -2424,6 +2977,7 @@ def prediccion_casos_anio():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar la prediccion")
@@ -2545,6 +3099,7 @@ def Porcentaje_Hombres_Covid():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -2552,6 +3107,7 @@ def Porcentaje_Hombres_Covid():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
         var2 = st.selectbox(
@@ -2559,6 +3115,7 @@ def Porcentaje_Hombres_Covid():
         (dataframe.columns))
         opcion3=var2.upper()
         st.write(opcion3)
+        dataframe[var2]=dataframe[var2].fillna(0)
         st.write(dataframe[var2])
 
 
@@ -2662,6 +3219,7 @@ def porcentaje_muertes_p():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -2669,6 +3227,7 @@ def porcentaje_muertes_p():
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
 
         var2 = st.selectbox(
@@ -2676,6 +3235,7 @@ def porcentaje_muertes_p():
         (dataframe.columns))
         opcion3=var2.upper()
         st.write(opcion3)
+        dataframe[var2]=dataframe[var2].fillna(0)
         st.write(dataframe[var2])
         st.info(" si escogio los campos correctamente  procesada escribir el pais, la region o el continente para  encontrar el porcentaje")
         pais = st.text_input('',placeholder='Escriba al pais,region o continente al que quiere realizar el analisis')
@@ -2732,18 +3292,21 @@ def Tasa_Comportamiento_Muertes_Covid():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
         var1 = st.selectbox(
         'Seleccione el campo casos ',
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
         var2 = st.selectbox(
         'Seleccione el campo muertes  o death ',
         (dataframe.columns))
         opcion2=var2.upper()
         st.write(opcion2)
+        dataframe[var2]=dataframe[var2].fillna(0)
         st.write(dataframe[var2])
         st.info(" si escogio los campos correctamente  proceda a escoger el pais  analizar las regiones")
         continente = st.text_input('',placeholder='Escriba el contienente al que quiere realizar el analisis')
@@ -2831,18 +3394,21 @@ def Muertes_por_Region():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
         var1 = st.selectbox(
         'Seleccione el campo estado  o departamento ',
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
         st.write(dataframe[var1])
         var2 = st.selectbox(
         'Seleccione el campo muertes  o death ',
         (dataframe.columns))
         opcion2=var2.upper()
         st.write(opcion2)
+        dataframe[var2]=dataframe[var2].fillna(0)
         st.write(dataframe[var2])
         st.info(" si escogio los campos correctamente  proceda a escoger el pais  analizar las regiones")
         pais = st.text_input('',placeholder='Escriba al pais al que quiere realizar el analisis')
@@ -2923,7 +3489,7 @@ def Muertes_por_Region():
 
 op = st.multiselect(
     'Bienvenido escoja la opcion que desea ',
-        ['Inicio☄️', 'Tendencia de Covid por pais📈','Inidice de Progresión de la pandemia.🦠','Predicción de Infertados en un País🧮','Predicción de mortalidad por COVID en un Departamento🧮','Análisis del número de muertes por coronavirus en un País☠️'
+        ['Inicio☄️', 'Tendencia de Covid por pais📈','Inidice de Progresión de la pandemia.🦠','Predicción de Infectados en un País🧮','Predicción de mortalidad por COVID en un Departamento🧮','Análisis del número de muertes por coronavirus en un País☠️'
             ,'Tendencia de la vacunación de en un País💉📈','Tendencia de casos confirmados de Coronavirus en un departamento de un País📈'
         ,'Predicción de mortalidad por COVID en un Pais🧮','Muertes promedio por casos confirmados y edad de covid 19 en un País☠️','Ánalisis Comparativo entres 2 o más paises o continentes🌎','Ánalisis Comparativo de Vacunación entre 2 paises💉'
         ,'Muertes según regiones de un país - Covid 19☠️','Predicciones de casos y muertes en todo el mundo🧮','Tasa de comportamiento de casos activos en relación al número de muertes en un continente☠️📈🦠','Tasa de mortalidad por coronavirus (COVID-19) en un país📈☠️'
@@ -2999,8 +3565,8 @@ if len(op)>0:
 
     elif op[0]=='Predicción de casos de un país para un año🧮':
         prediccion_casos_anio()
-    elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
-        Analisis_Muertes_por_Pais()
+    elif op[0]=='Tasa de mortalidad por coronavirus (COVID-19) en un país📈☠️':
+        Tasa_Mortalidad_Pais()
     elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
         Analisis_Muertes_por_Pais()
     elif op[0]=='Análisis del número de muertes por coronavirus en un País☠️':
