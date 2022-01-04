@@ -482,7 +482,7 @@ def Prediccion_Muertes_Departamento ():
         texto2='Mostrando una grafica polinomial de grado '+str(nb_degree)+' para la '+"Prediccion de Muertes en el departamento  "+departamento+title
 
         plt.xlabel('#')
-        plt.savefig('E:\\PrediccionMuertesDepartamento.png')
+        plt.savefig('PrediccionMuertesDepartamento.png')
         plt.ylabel('Muertes por COVID-19')
         plt.show()
         st.pyplot()
@@ -496,7 +496,7 @@ def Prediccion_Muertes_Departamento ():
             pdf.multi_cell(200,10,txt=texto2,align='J')
 
 
-            pdf.image('E:\\PrediccionMuertesDepartamento.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('PrediccionMuertesDepartamento.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
             pdf.output('PrediccionMuertesDepartamento.pdf', 'F')
 
@@ -602,7 +602,7 @@ def Analisis_Muertes_por_Pais():
 
         plt.plot(prediction_space, reg.predict(prediction_space))
         plt.legend(('Muertes por covid-19','Linear Regression'), loc='upper right')
-        plt.savefig('E:\\AnalisisMuertePais.png')
+        plt.savefig('AnalisisMuertePais.png')
         plt.show()
         st.pyplot()
         st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
@@ -633,7 +633,7 @@ def Analisis_Muertes_por_Pais():
             pdf.multi_cell(200,10,txt=pdf_ecuacion,align='J')
 
 
-            pdf.image('E:\\AnalisisMuertePais.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('AnalisisMuertePais.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
             pdf.multi_cell(200,10,txt=texto2,align='J')
             pdf.output('AnalisisMuertePais.pdf', 'F')
 
@@ -720,7 +720,7 @@ def Tendencia_casos_Departamento():
         plt.ylabel('CASOS_COVID')
         plt.xlabel('#')
         plt.plot(prediction_space, reg.predict(prediction_space))
-        plt.savefig('E:\\TendenciaCasosDepartamento.png')
+        plt.savefig('TendenciaCasosDepartamento.png')
 
         plt.show()
         st.pyplot()
@@ -772,7 +772,7 @@ def Tendencia_casos_Departamento():
         texto2="Tendecia de casos de COVID-19 en el Estado "+departamento+title
         plt.xlabel('#')
         plt.ylabel('Casos de COVID-19')
-        plt.savefig('E:\\TendenciaCasosDepartamentoPolinomial.png')
+        plt.savefig('TendenciaCasosDepartamentoPolinomial.png')
         plt.show()
         st.pyplot()
         export_as_pdf = st.button("Export Report")
@@ -790,14 +790,14 @@ def Tendencia_casos_Departamento():
 
 
 
-            pdf.image('E:\\TendenciaCasosDepartamento.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('TendenciaCasosDepartamento.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
             pdf.multi_cell(200,10,txt=texto,align='J')
 
             pdf.add_page()
             pdf.multi_cell(200,10,txt=texto2,align='J')
 
 
-            pdf.image('E:\\TendenciaCasosDepartamentoPolinomial.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('TendenciaCasosDepartamentoPolinomial.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
             pdf.output('TendenciaCasosDepartamento.pdf', 'F')
 
@@ -924,7 +924,7 @@ def Prediccion_Muertes_dia():
         plt.title("Prediccion de Muertes por dia casuados por el virus por Covid en el pais "+pais+title)
         plt.xlabel('#dias')
         plt.ylabel('Muertes por COVID-19')
-        plt.savefig('E:\\Prediccion_casos_Dia.png')
+        plt.savefig('Prediccion_casos_Dia.png')
         plt.show()
         st.pyplot()
 
@@ -938,7 +938,7 @@ def Prediccion_Muertes_dia():
             pdf.multi_cell(200,10,txt=texto2,align='J')
 
 
-            pdf.image('E:\\Prediccion_casos_Dia.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('Prediccion_casos_Dia.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
             pdf.output('Prediccion_casos_Dia.pdf', 'F')
 
@@ -1021,7 +1021,7 @@ def Factores_Muertes():
         plt.title("Factores de muertes en el PAIS :"+pais_v)
         plt.ylabel('Numero de muertes  en el  '+pais_v)
         plt.xlabel('#Factores de muertes')
-        plt.savefig('E:\\Factores_Muerte.png')
+        plt.savefig('Factores_Muerte.png')
         #plt.plot(prediction_space, reg.predict(prediction_space))
         plt.show()
         st.pyplot()
@@ -1054,7 +1054,7 @@ def Factores_Muertes():
 
 
 
-            pdf.image('E:\\Factores_Muerte.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('Factores_Muerte.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
             pdf.output('Factores_Muerte.pdf', 'F')
 
@@ -1177,7 +1177,7 @@ def Prediccion_Muertes_Pais():
         plt.xlabel('#')
         plt.ylabel('Muertes por COVID-19')
 
-        plt.savefig('E:\\PrediccionMuertes_por_Covid_en_Pais.png')
+        plt.savefig('PrediccionMuertes_por_Covid_en_Pais.png')
         plt.show()
         st.pyplot()
         export_as_pdf = st.button("Export Report")
@@ -1190,7 +1190,7 @@ def Prediccion_Muertes_Pais():
             pdf.multi_cell(200,10,txt=texto2,align='J')
 
 
-            pdf.image('E:\\PrediccionMuertes_por_Covid_en_Pais.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('PrediccionMuertes_por_Covid_en_Pais.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
             pdf.output('PrediccionMuertes_por_Covid_en_Pais.pdf', 'F')
 
@@ -1337,7 +1337,7 @@ def Muertes_Edad():
 
         plt.plot(prediction_space, reg.predict(prediction_space))
         plt.show()
-        plt.savefig('E:\\Tendencia_MuertesCovid19.png')
+        plt.savefig('Tendencia_MuertesCovid19.png')
         st.pyplot()
         image7 = Image.open('tendenciaa.png')
 
@@ -1370,7 +1370,7 @@ def Muertes_Edad():
                 TextoInfo=" Muertes:"+" "+str(i.Muertes)+"  Casos COVID-19:"+str(i.Casos)+"  EDAD"+str(i.Edad)+"  Promedio Muertes"+str(i.PromediodeMuertes)
 
                 pdf.multi_cell(200,10,txt=TextoInfo,align='J')
-            pdf.image('E:\\Tendencia_MuertesCovid19.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('Tendencia_MuertesCovid19.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
             pdf.set_font('Times', 'B', 12)
             pdf.multi_cell(200,10,txt=texto,align='J')
             pdf.output('Muertespromedioporcasosconfirmados.pdf', 'F')
@@ -1468,7 +1468,7 @@ def Tendencia_Vacunancion_Pais():
         plt.xlabel('#')
         plt.plot(prediction_space, reg.predict(prediction_space))
 
-        plt.savefig('E:\\Tendencia_Vacunacion_paisLineal.png')
+        plt.savefig('Tendencia_Vacunacion_paisLineal.png')
         plt.show()
         st.pyplot()
         image7 = Image.open('tendenciaa.png')
@@ -1519,7 +1519,7 @@ def Tendencia_Vacunancion_Pais():
         plt.xlabel('#')
         plt.ylabel('Vacunacion de COVID-19')
         plt.show()
-        plt.savefig('E:\\Tendencia_Vacunacion_paisPolinomial.png')
+        plt.savefig('Tendencia_Vacunacion_paisPolinomial.png')
         st.pyplot()
         export_as_pdf = st.button("Export Report")
         if export_as_pdf:
@@ -1536,14 +1536,14 @@ def Tendencia_Vacunancion_Pais():
 
 
 
-            pdf.image('E:\\Tendencia_Vacunacion_paisLineal.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('Tendencia_Vacunacion_paisLineal.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
             pdf.multi_cell(200,10,txt=texto,align='J')
 
             pdf.add_page()
             pdf.multi_cell(200,10,txt=texto2,align='J')
 
 
-            pdf.image('E:\\Tendencia_Vacunacion_paisPolinomial.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('Tendencia_Vacunacion_paisPolinomial.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
             pdf.output('Tendencia_VacunacionPais.pdf', 'F')
 
@@ -1666,7 +1666,7 @@ def Comparacion_Vacunacion_Pais():
             plt.ylabel('VACUNACION en '+options[0])
             plt.xlabel('#')
             plt.plot(prediction_space, reg.predict(prediction_space))
-            plt.savefig('E:\\TendenciaVacunacionPais1.png')
+            plt.savefig('TendenciaVacunacionPais1.png')
             plt.show()
             st.pyplot()
             image7 = Image.open('tendenciaa.png')
@@ -1701,7 +1701,7 @@ def Comparacion_Vacunacion_Pais():
             plt.ylabel('VACUNACION en '+options[0])
             plt.xlabel('#')
             plt.plot(prediction_space, reg.predict(prediction_space))
-            plt.savefig('E:\\TendenciaVacunacionPais2.png')
+            plt.savefig('TendenciaVacunacionPais2.png')
             plt.show()
             st.pyplot()
             image7 = Image.open('tendenciaa.png')
@@ -1732,7 +1732,7 @@ def Comparacion_Vacunacion_Pais():
         #plt.savefig('E:\\TendenciaVacunacionPais1.png')
 
 
-            pdf.image('E:\\TendenciaVacunacionPais1.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('TendenciaVacunacionPais1.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
             pdf.multi_cell(200,10,txt=texto,align='J')
 
             pdf.add_page()
@@ -1741,7 +1741,7 @@ def Comparacion_Vacunacion_Pais():
             tendencia2="Tendencia  de Vacunacion en el pais "+str(options[1])
             pdf.multi_cell(200,10,txt=tendencia2,align='J')
 
-            pdf.image('E:\\TendenciaVacunacionPais2.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('TendenciaVacunacionPais2.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
             pdf.multi_cell(200,10,txt=texto2,align='J')
             pdf.output('Comparacion_Vacunacion_2PAISES.pdf', 'F')
 
@@ -1867,7 +1867,7 @@ def Analisis_Comparativo_entre2_pais_contienente():
         plt.ylabel('VACUNACION en '+pais_v)
         plt.xlabel('#')
         plt.plot(prediction_space, reg.predict(prediction_space))
-        plt.savefig('E:\\TendenciaVacunacionC.png')
+        plt.savefig('TendenciaVacunacionC.png')
         plt.show()
         st.pyplot()
         st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
@@ -1899,7 +1899,7 @@ def Analisis_Comparativo_entre2_pais_contienente():
         plt.xlabel('#')
         plt.plot(prediction_space, reg.predict(prediction_space))
         plt.show()
-        plt.savefig('E:\\TendenciaMuerteC.png')
+        plt.savefig('TendenciaMuerteC.png')
         st.pyplot()
         st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
         st.info(reg.coef_)
@@ -1952,7 +1952,7 @@ def Analisis_Comparativo_entre2_pais_contienente():
         plt.title("Prediccion de Infectados en  "+pais_v+title)
         plt.xlabel('#')
         plt.ylabel('Infectados por COVID-19')
-        plt.savefig('E:\\PrediccionCasosC.png')
+        plt.savefig('PrediccionCasosC.png')
         plt.show()
         st.pyplot()
 
@@ -1975,14 +1975,14 @@ def Analisis_Comparativo_entre2_pais_contienente():
 
             pdf.multi_cell(200,10,txt="Tendencia de Vacunacion en el pais escogido",align='J')
 
-            pdf.image('E:\\TendenciaVacunacionC.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('TendenciaVacunacionC.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
             pdf.multi_cell(200,10,txt="Tendencia de Muertes por COVID-19 en el pais escogido",align='J')
 
-            pdf.image('E:\\TendenciaMuerteC.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('TendenciaMuerteC.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
             pdf.multi_cell(200,10,txt="Prediccion de casos de  COVID-19 en el pais escogido",align='J')
             pdf.add_page()
-            pdf.image('E:\\PrediccionCasosC.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('PrediccionCasosC.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
             pdf.output('Comparacion_entre_2_MAS.pdf', 'F')
 
@@ -2093,7 +2093,7 @@ def indice_progresion():
         titulo="Progresion de la pandemia de COVID-19"+title
         plt.xlabel('#dias')
         plt.ylabel('Casos de  COVID-19')
-        plt.savefig('E:\\ProgresionPandemia.png')
+        plt.savefig('ProgresionPandemia.png')
         plt.show()
         st.pyplot()
         export_as_pdf = st.button("Export Report")
@@ -2113,7 +2113,7 @@ def indice_progresion():
             pdf.multi_cell(200,10,txt=titulo,align='J')
 
 
-            pdf.image('E:\\ProgresionPandemia.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('ProgresionPandemia.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
             pdf.output('ProgresionPandemia.pdf', 'F')
 
@@ -2243,7 +2243,7 @@ def Tasa_Mortalidad_Pais():
         plt.ylabel('MUERTE POR COVID-19')
         plt.xlabel('#')
         plt.plot(prediction_space, reg.predict(prediction_space))
-        plt.savefig('E:\\TasaMortalidad.png')
+        plt.savefig('TasaMortalidad.png')
         plt.show()
         st.pyplot()
         st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
@@ -2269,7 +2269,7 @@ def Tasa_Mortalidad_Pais():
             pdf.multi_cell(200,10,txt="Tendencia de muerte",align='J')
 
 
-            pdf.image('E:\\TasaMortalidad.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('TasaMortalidad.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
             pdf.output('TasaMortalidad.pdf', 'F')
 
@@ -2359,7 +2359,7 @@ def prediccion_mundial():
         plt.title("Prediccion de   casos de COVID-19 alrededor del mundo "+title)
         plt.xlabel('#')
         titulo1="Prediccion de   casos de COVID-19 alrededor del mundo grafica:"+title
-        plt.savefig('E:\\Prediccion_casos_en_el_Mundo.png')
+        plt.savefig('Prediccion_casos_en_el_Mundo.png')
         plt.ylabel('Casos de COVID-19')
         plt.show()
         st.pyplot()
@@ -2406,7 +2406,7 @@ def prediccion_mundial():
         titulo2="Prediccion de   muertes de COVID-19 alrededor del mundo grafica: "+title
         plt.xlabel('#')
         plt.ylabel('Muertes de COVID-19')
-        plt.savefig('E:\\Prediccion_Muertes_en_el_Mundo.png')
+        plt.savefig('Prediccion_Muertes_en_el_Mundo.png')
         plt.show()
         st.pyplot()
 
@@ -2425,12 +2425,12 @@ def prediccion_mundial():
             pdf.multi_cell(200,10,txt=titulo1,align='J')
 
 
-            pdf.image('E:\\Prediccion_casos_en_el_Mundo.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('Prediccion_casos_en_el_Mundo.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
             pdf.multi_cell(200,10,txt=titulo2,align='J')
 
             pdf.add_page()
-            pdf.image('E:\\Prediccion_Muertes_en_el_Mundo.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('Prediccion_Muertes_en_el_Mundo.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
             pdf.output('Predicciones_Mundiales.pdf', 'F')
 
@@ -2523,7 +2523,7 @@ def Comparacion_Infectados_Vacunados_Pais():
         plt.xlabel('Numero de contagios  de COVID-19')
 #comment this line to get only the points
         plt.scatter(kmeans.cluster_centers_[:,0], kmeans.cluster_centers_[:,1], color='black')
-        plt.savefig('E:\\Comparacion_casos_pruebas.png')
+        plt.savefig('Comparacion_casos_pruebas.png')
         plt.show()
         st.pyplot()
         st.info('Para este analisis se ha decidido dividir  los datos en 3 regiones   para mostrar de una mejor manera los datos  la region 1 es de color morado , la region 2 es colorrojo y la region 3 es de color cyan esto se hizo para observar de una mejor manera la comparacion entre los casos de covid 19 y las puebtas que ha realizao este pais ')
@@ -2562,7 +2562,7 @@ def Comparacion_Infectados_Vacunados_Pais():
             pdf.multi_cell(200,10,txt=titulopd,align='J')
 
 
-            pdf.image('E:\\Comparacion_casos_pruebas.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('Comparacion_casos_pruebas.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
             pdf.multi_cell(200,10,txt=info_pdf,align='J')
 
@@ -2656,7 +2656,7 @@ def Tendencia_Infectados_dia():
         plt.ylabel('Casos COVID-19 en '+pais)
         plt.xlabel('#')
         plt.plot(prediction_space, reg.predict(prediction_space))
-        plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
+        plt.savefig('Tendencia_Infectados_diaLineal.png')
         plt.show()
         st.pyplot()
         image7 = Image.open('tendenciaa.png')
@@ -2708,7 +2708,7 @@ def Tendencia_Infectados_dia():
         titulo_pd="Grafica polinomial de la " +"Tendecia de casos   de COVID-19 por dia en el pais "+pais+title
         plt.xlabel('#')
         plt.ylabel('Casos de COVID-19')
-        plt.savefig('E:\\Tendencia_Infectados_diaPolinomial.png')
+        plt.savefig('Tendencia_Infectados_diaPolinomial.png')
         plt.show()
         st.pyplot()
         export_as_pdf = st.button("Export Report")
@@ -2725,12 +2725,12 @@ def Tendencia_Infectados_dia():
 
             pdf.multi_cell(200,10,txt="Grafica Lineal de casos de Covid-19",align='J')
 
-#plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
-            pdf.image('E:\\Tendencia_Infectados_diaLineal.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+#plt.savefig('Tendencia_Infectados_diaLineal.png')
+            pdf.image('Tendencia_Infectados_diaLineal.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
             pdf.multi_cell(200,10,txt=info_pd,align='J')
             pdf.add_page()
             pdf.multi_cell(200,10,txt=titulo_pd,align='J')
-            pdf.image('E:\\Tendencia_Infectados_diaPolinomial.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('Tendencia_Infectados_diaPolinomial.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
 
 
@@ -2884,7 +2884,7 @@ def Comportamiento_Casos_Municipio():
         Titulo_grafo="Grafica Polinomial del ""Comportamiento de casos de COVID-19 "+pais+title
         plt.xlabel('#Municipio')
         plt.ylabel('casos de COVID-19')
-        plt.savefig('E:\\ComportamientoCasos.png')
+        plt.savefig('ComportamientoCasos.png')
         plt.show()
         st.pyplot()
 
@@ -2903,7 +2903,7 @@ def Comportamiento_Casos_Municipio():
             pdf.multi_cell(200,10,txt=Titulo_grafo,align='J')
 
 #plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
-            pdf.image('E:\\ComportamientoCasos.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('ComportamientoCasos.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
 
 
@@ -3029,7 +3029,7 @@ def prediccion_ultimo_dia():
         Titulo_grafo="Grafica polinial de  la " +"Prediccion de casos  en el primer año por COVID-19 "+pais+title
         plt.xlabel('#dias')
         plt.ylabel('CASOS COVID-19')
-        plt.savefig('E:\\PrediccionUltimoDia.png')
+        plt.savefig('PrediccionUltimoDia.png')
         plt.show()
         st.pyplot()
         export_as_pdf = st.button("Export Report")
@@ -3047,7 +3047,7 @@ def prediccion_ultimo_dia():
             pdf.multi_cell(200,10,txt=Titulo_grafo,align='J')
 
 #plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
-            pdf.image('E:\\PrediccionUltimoDia.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('PrediccionUltimoDia.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
 
 
@@ -3188,7 +3188,7 @@ def prediccion_casos_anio():
         Titulo_grafo="Prediccion de casos  en el año "+str(anio)+"para el pais "+pais+title
         plt.xlabel('#dias')
         plt.ylabel('CASOS COVID-19')
-        plt.savefig('E:\\PrediccionCasos_anio.png')
+        plt.savefig('PrediccionCasos_anio.png')
         plt.show()
         st.pyplot()
         export_as_pdf = st.button("Export Report")
@@ -3206,7 +3206,7 @@ def prediccion_casos_anio():
             pdf.multi_cell(200,10,txt=Titulo_grafo,align='J')
 
 #plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
-            pdf.image('E:\\PrediccionCasos_anio.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('PrediccionCasos_anio.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
 
 
@@ -3343,7 +3343,7 @@ def Porcentaje_Hombres_Covid():
         Titulo_grafo="Grafica Polinomial de los casos de COVID-19 en el pais "+pais+title
         plt.xlabel('#dias')
         plt.ylabel('CASOS de COVID-19')
-        plt.savefig('E:\\Porcentaje_Hombres.png')
+        plt.savefig('Porcentaje_Hombres.png')
         plt.show()
         st.pyplot()
 
@@ -3366,7 +3366,7 @@ def Porcentaje_Hombres_Covid():
             pdf.multi_cell(200,10,txt=Titulo_grafo,align='J')
 
 #plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
-            pdf.image('E:\\Porcentaje_Hombres.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('Porcentaje_Hombres.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
 
 
@@ -3451,7 +3451,7 @@ def porcentaje_muertes_p():
         Titulo_grafo= "Grafica Polinomial de "+"Muertes por COVID-19 vs el numero de casos por COVID-19 en:"+pais
         plt.ylabel('Numero de muertes  en  '+pais)
         plt.xlabel('Casos por COVID-19')
-        plt.savefig('E:\\Muertes_vs_casos.png')
+        plt.savefig('Muertes_vs_casos.png')
         #plt.plot(prediction_space, reg.predict(prediction_space))
         plt.show()
         st.pyplot()
@@ -3474,7 +3474,7 @@ def porcentaje_muertes_p():
             pdf.multi_cell(200,10,txt=Titulo_grafo,align='J')
 
 #plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
-            pdf.image('E:\\Muertes_vs_casos.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('Muertes_vs_casos.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
 
 
@@ -3584,7 +3584,7 @@ def Tasa_Comportamiento_Muertes_Covid():
         Titulo_grafo="Grafica Polinomial de la "+"Tasa de comportamiento de casos activos de COVID-19 en relacion a las muertes en el continente de  "+continente+title
         plt.ylabel('#Casos Activos')
         plt.xlabel('Muertes por COVID-19')
-        plt.savefig('E:\\Tasa_comportamiento_activos_muertes_continente.png')
+        plt.savefig('Tasa_comportamiento_activos_muertes_continente.png')
         plt.show()
         st.pyplot()
         export_as_pdf = st.button("Export Report")
@@ -3606,7 +3606,7 @@ def Tasa_Comportamiento_Muertes_Covid():
             pdf.multi_cell(200,10,txt=Titulo_grafo,align='J')
 
 #plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
-            pdf.image('E:\\Tasa_comportamiento_activos_muertes_continente.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('Tasa_comportamiento_activos_muertes_continente.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
             pdf.output('Tasa_comportamiento_activos_muertes_continente.pdf', 'F')
 
             html = create_download_link(pdf.output(dest="S").encode("latin-1"), "Tasa_comportamiento_activos_muertes_continente")
@@ -3720,7 +3720,7 @@ def Muertes_por_Region():
         plt.xlabel('#REGIONES')
         #plt.plot(prediction_space, reg.predict(prediction_space))
         plt.show()
-        plt.savefig('E:\\Muertes_Region.png')
+        plt.savefig('Muertes_Region.png')
         st.pyplot()
 
         #st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
@@ -3744,7 +3744,7 @@ def Muertes_por_Region():
 
 
 #plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
-            pdf.image('E:\\Muertes_Region.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('Muertes_Region.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
             pdf.add_page()
 
             pdf.set_font('Times', 'B', 10)
