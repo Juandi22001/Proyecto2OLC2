@@ -17,6 +17,7 @@
 :round_pushpin: [AbrirDataFrame](#id2)
 :round_pushpin: [Parametrizacion de Variables](#id3)
 
+:round_pushpin: [Metodo Isin](#id4)
 <br>
 <br>
 # Reportes
@@ -28,8 +29,8 @@
 ## :beginner: Para parametrizar las varaibles , la variable var  valga la redundancia es de suma importancia ya que la aplicacion le indica al usuario que  columna utilizar y  la opcion que el usuario se guarda en esa variable y gracias a eso es mucho mas facil ir parametrizando los valores  y asi obtener resultados<a name="id3"></a>
 ![3](https://github.com/Juandi22001/Proyecto2OLC2/blob/main/COMPI2/img/data2.png)
 
-## :beginner: Indice de progresion de la pandemia<a name="id4"></a>
-![4](./img/reporte_4.png)
+## :beginner: Este metodo propio de la librerias pandas , es quiza uno de los metodos mas importantes en todo el proyecto gracias a que ese metodo es posible obtener todos los valores posibles del pais o continente del que querremos obtener la informacion y posteriormete hacer el analisis<a name="id4"></a>
+![4](https://github.com/Juandi22001/Proyecto2OLC2/blob/main/COMPI2/img/data3.png)
 
 ## :beginner: Prediccion de infectados en un pais<a name="id5"></a>
 ![5](./img/reporte_5.png)
