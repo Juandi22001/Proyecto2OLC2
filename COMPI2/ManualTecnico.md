@@ -22,7 +22,7 @@
 
 
 ## :beginner: De esta manera es como la aplicaion abri un archivo csv  con la ayuda de la libreria pandas , esto es de gran ayuda ya que guarda el archivo csv en la  variable dataframe gracias a ellos es que realizar el analisis es bastante sencillo<a name="id2"></a>
-![2](./img/data.png)
+![2]([./img/data.png](https://github.com/Juandi22001/Proyecto2OLC2/blob/main/COMPI2/img/data.PNG))
 
 ## :beginner: Tendencia de covid por pais<a name="id3"></a>
 ![3](./img/reporte_3.png)
