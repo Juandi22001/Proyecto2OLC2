@@ -17,7 +17,8 @@
 :round_pushpin: [AbrirDataFrame](#id2)
 :round_pushpin: [Parametrizacion de Variables](#id3)
 
-:round_pushpin: [Metodo Isin](#id4)
+:round_pushpin: [Metodo Isin()](#id4)
+:round_pushpin: [Metodo drop_duplicates()](#id5)
 <br>
 <br>
 # Reportes
@@ -32,8 +33,8 @@
 ## :beginner: Este metodo propio de la librerias pandas , es quiza uno de los metodos mas importantes en todo el proyecto gracias a que ese metodo es posible obtener todos los valores posibles del pais o continente del que querremos obtener la informacion y posteriormete hacer el analisis<a name="id4"></a>
 ![4](https://github.com/Juandi22001/Proyecto2OLC2/blob/main/COMPI2/img/data3.png)
 
-## :beginner: Prediccion de infectados en un pais<a name="id5"></a>
-![5](./img/reporte_5.png)
+## :beginner: Este metodo su funcion en el proyecto es simplemente el de evitar valores repetidos , es decir que en el archivo csv que se desee cargar vendran siempre datos repetidos , entonces gracias a este metodo propio de la libreria pandas es posible evitar la data repetida y asi   poder mostrarle al usuario los datos que el desea escoger pero  sin data repetida<a name="id5"></a>
+![5](https://github.com/Juandi22001/Proyecto2OLC2/blob/main/COMPI2/img/data4.png)
 
 ## :beginner: Prediccion de mortalidad por COVID en un Departamento<a name="id6"></a>
 ![6](./img/reporte_6.png)
