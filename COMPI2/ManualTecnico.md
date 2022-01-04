@@ -22,7 +22,7 @@
 
 
 ## :beginner: De esta manera es como la aplicaion abri un archivo csv  con la ayuda de la libreria pandas , esto es de gran ayuda ya que guarda el archivo csv en la  variable dataframe<a name="id2"></a>
-![2](./img/Abrir_DATAFRAME.png)
+![2](./img/reporte_1.png)
 
 ## :beginner: Tendencia de covid por pais<a name="id3"></a>
 ![3](./img/reporte_3.png)
