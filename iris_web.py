@@ -89,15 +89,16 @@ def Tendencia_Covid_Pais():
         opcion1=var.upper()
         st.write(opcion1)
         st.write(dataframe[var])
-        dataframe[var]=dataframe[var].fillna(0)
+
 
         var1 = st.selectbox(
         'Seleccione el campo casos  o confirmited ',
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
-        st.write(dataframe[var1])
         dataframe[var1]=dataframe[var1].fillna(0)
+        st.write(dataframe[var1])
+
 
 
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar la prediccion")
@@ -277,7 +278,7 @@ def Prediccion_Infectados_Pais(icon='pred.svg'):
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
 
@@ -424,7 +425,7 @@ def Prediccion_Muertes_Departamento ():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -541,7 +542,7 @@ def Analisis_Muertes_por_Pais():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -678,7 +679,7 @@ def Tendencia_casos_Departamento():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -841,7 +842,7 @@ def Prediccion_Muertes_dia():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -975,7 +976,7 @@ def Factores_Muertes():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar el analisis")
         pais_v = st.text_input('',placeholder='Escriba al pais al que quiere realizar el analisis')
@@ -1112,7 +1113,7 @@ def Prediccion_Muertes_Pais():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -1226,7 +1227,7 @@ def Muertes_Edad():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -1256,6 +1257,7 @@ def Muertes_Edad():
         st.write(dataframe[var3])
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar el promedio")
         pais_v = st.text_input('',placeholder='Escriba al pais al que quiere realizar el analisis')
+
         pais_Escogido_v=[pais_v]
         data_pais=dataframe[dataframe[var].isin(pais_Escogido_v)]
         casos=[]
@@ -1408,7 +1410,7 @@ def Tendencia_Vacunancion_Pais():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -1580,7 +1582,7 @@ def Comparacion_Vacunacion_Pais():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -2024,7 +2026,7 @@ def indice_progresion():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         dias = st.number_input('Inserte numero de dias  para poder  ver la progresion de la pandemia')
@@ -2150,7 +2152,7 @@ def Tasa_Mortalidad_Pais():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -2303,7 +2305,7 @@ def prediccion_mundial():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -2467,7 +2469,7 @@ def Comparacion_Infectados_Vacunados_Pais():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -2604,7 +2606,7 @@ def Tendencia_Infectados_dia():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -2771,7 +2773,7 @@ def Comportamiento_Casos_Municipio():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -2949,7 +2951,7 @@ def prediccion_ultimo_dia():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -3089,7 +3091,7 @@ def prediccion_casos_anio():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -3250,7 +3252,7 @@ def Porcentaje_Hombres_Covid():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
