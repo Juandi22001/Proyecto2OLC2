@@ -344,7 +344,7 @@ def Prediccion_Infectados_Pais(icon='pred.svg'):
         plt.xlabel('#')
         plt.ylabel('Infectados por COVID-19')
 
-        plt.savefig('E:\\PrediccionInfectadosPais.png')
+        plt.savefig('PrediccionInfectadosPais.png')
         plt.show()
         st.pyplot()
 
@@ -361,7 +361,7 @@ def Prediccion_Infectados_Pais(icon='pred.svg'):
             pdf.multi_cell(200,10,txt=texto2,align='J')
 
 
-            pdf.image('E:\\PrediccionInfectadosPais.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('PrediccionInfectadosPais.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
             pdf.output('PrediccionInfectadosPais.pdf', 'F')
 
