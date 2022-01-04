@@ -286,7 +286,7 @@ def Prediccion_Infectados_Pais(icon='pred.svg'):
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
 
         var1 = st.selectbox(
@@ -304,6 +304,9 @@ def Prediccion_Infectados_Pais(icon='pred.svg'):
         st.markdown('# Pais escogido:'+pais)
         number = st.number_input('Inserte el grado  del que desea hacer la grafica  prediccion')
         st.write('El grado seria ', number)
+
+        valor = st.number_input('Inserte el  numero de dias a mostrar')
+        st.write('El numero de dias a mostrar es ', valor)
 
         casos_pais=dataframe[dataframe[var].isin(pais_Escogido)]
         st.write(casos_pais)
@@ -330,7 +333,7 @@ def Prediccion_Infectados_Pais(icon='pred.svg'):
 
         r2=r2_score(Y,Y_NEW)
         x_new_main=0.0
-        x__new_max=50.0
+        x__new_max=float(valor)
 
 
         X_NEW=np.linspace(x_new_main,x__new_max,50)
@@ -355,7 +358,8 @@ def Prediccion_Infectados_Pais(icon='pred.svg'):
         plt.show()
         st.pyplot()
 
-
+        st.markdown('### La prediccion de Infectados en el dia '+str(valor)+ 'es de '+str(Y_NEW[int(Y_NEW.size - 1)][0])+ ' casos de COVID-19')
+        valor_prediccion='La prediccion de Infectados en el dia  '+str(valor)+ 'es de '+str(Y_NEW[int(Y_NEW.size - 1)][0]) + ' casos de COVID-19'
 
 
         export_as_pdf = st.button("Export Report")
@@ -364,6 +368,7 @@ def Prediccion_Infectados_Pais(icon='pred.svg'):
             pdf.add_page()
             pdf.set_xy(0, 0)
             pdf.set_font('Times', 'B', 15)
+            pdf.multi_cell(200,10,txt=valor_prediccion,align='J')
 
             pdf.multi_cell(200,10,txt=texto2,align='J')
 
@@ -423,7 +428,7 @@ def Prediccion_Muertes_Departamento ():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo Muertes   ',
@@ -439,6 +444,9 @@ def Prediccion_Muertes_Departamento ():
         st.markdown('# Departamento escogido:'+departamento)
         number = st.number_input('Inserte el grado  del que desea hacer la grafica prediccion')
         st.write('El grado seria ', number)
+
+        valor = st.number_input('Inserte el  numero de dias a mostrar')
+        st.write('El numero de dias a mostrar es ', valor)
         muertes_departamento=dataframe[dataframe[var].isin(departamento_Escogido)]
         st.write(muertes_departamento)
         tamanio=muertes_departamento[var1].__len__()
@@ -462,7 +470,7 @@ def Prediccion_Muertes_Departamento ():
 
         r2=r2_score(Y,Y_NEW)
         x_new_main=0.0
-        x__new_max=50.0
+        x__new_max=float(valor)
 
         X_NEW=np.linspace(x_new_main,x__new_max,50)
 
@@ -483,12 +491,16 @@ def Prediccion_Muertes_Departamento ():
         plt.ylabel('Muertes por COVID-19')
         plt.show()
         st.pyplot()
+        st.markdown('### La prediccion de muertes en el dia '+str(valor)+ 'es de '+str(Y_NEW[int(Y_NEW.size - 1)][0])+ ' muertes  por COVID-19')
+        valor_prediccion='La prediccion de muertes en el dia  '+str(valor)+ 'es de '+str(Y_NEW[int(Y_NEW.size - 1)][0]) + ' muertes por COVID-19'
+
         export_as_pdf = st.button("Export Report")
         if export_as_pdf:
             pdf = FPDF()
             pdf.add_page()
             pdf.set_xy(0, 0)
             pdf.set_font('Times', 'B', 15)
+            pdf.multi_cell(200,10,txt=valor_prediccion,align='J')
 
             pdf.multi_cell(200,10,txt=texto2,align='J')
 
@@ -528,7 +540,7 @@ def Analisis_Muertes_por_Pais():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo muertes  o deaths ',
@@ -652,7 +664,7 @@ def Tendencia_casos_Departamento():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo casos  o confirmited ',
@@ -802,7 +814,7 @@ def Prediccion_Muertes_dia():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo casos  o confirmited ',
@@ -863,7 +875,7 @@ def Prediccion_Muertes_dia():
 
         r2=r2_score(Y,Y_NEW)
         x_new_main=0
-        x__new_max=400
+        x__new_max=float(dias)
 
 
 
@@ -880,12 +892,14 @@ def Prediccion_Muertes_dia():
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
         texto2='Mostrando una grafica polinomial de grado '+str(nb_degree)+' para la '+"Prediccion de Infectados  por dia en el pais "+pais+title
 
-        plt.title("Prediccion de Muertes por dia casuados por el virus por Covid en el pais "+pais+title)
+        plt.title("Prediccion de casos confirmados por dia casuados por el virus por Covid en el pais "+pais+title)
         plt.xlabel('#dias')
-        plt.ylabel('Muertes por COVID-19')
+        plt.ylabel('Casos de COVID-19')
         plt.savefig('Prediccion_casos_Dia.png')
         plt.show()
         st.pyplot()
+        st.markdown('### La prediccion de casos confirmados en el dia '+str(dias)+ 'es de '+str(Y_NEW[int(Y_NEW.size - 1)][0]))
+        valor_prediccion='La prediccion de casos confirmados en el dia  '+str(dias)+ 'es de '+str(Y_NEW[int(Y_NEW.size - 1)][0])
 
         export_as_pdf = st.button("Export Report")
         if export_as_pdf:
@@ -893,6 +907,8 @@ def Prediccion_Muertes_dia():
             pdf.add_page()
             pdf.set_xy(0, 0)
             pdf.set_font('Times', 'B', 15)
+            pdf.multi_cell(200,10,txt=valor_prediccion,align='J')
+
 
             pdf.multi_cell(200,10,txt=texto2,align='J')
 
@@ -924,7 +940,7 @@ def Factores_Muertes():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar el analisis")
         pais_v = st.text_input('',placeholder='Escriba al pais al que quiere realizar el analisis')
         pais_Escogido_v=[pais_v]
@@ -1048,7 +1064,7 @@ def Prediccion_Muertes_Pais():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo muertes  o deaths ',
@@ -1150,7 +1166,7 @@ def Muertes_Edad():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo casos  o confirmited ',
@@ -1320,7 +1336,7 @@ def Tendencia_Vacunancion_Pais():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo vacunacion  o vacunated ',
@@ -1480,7 +1496,7 @@ def Comparacion_Vacunacion_Pais():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo vacunacion  o vacunated ',
@@ -1661,7 +1677,7 @@ def Analisis_Comparativo_entre2_pais_contienente():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo vacunacion  o vacunated ',
@@ -1900,7 +1916,7 @@ def indice_progresion():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         dias = st.number_input('Inserte numero de dias  para poder  ver la progresion de la pandemia')
         st.write('numero de dias ', dias)
@@ -2015,7 +2031,7 @@ def Tasa_Mortalidad_Pais():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo casos   ',
@@ -2156,7 +2172,7 @@ def prediccion_mundial():
         st.write(opcion1)
         dataframe[var]=dataframe[var].fillna(0)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo muertes  o deaths ',
@@ -2168,6 +2184,9 @@ def prediccion_mundial():
 
 
         st.markdown('## Predicion de casos de COVID-19 en todo el mundo')
+        valor = st.number_input('Inserte el  numero de dias a mostrar')
+        st.write('El numero de dias a mostrar es ', valor)
+
         number = st.number_input('Inserte el grado  del que desea hacer la grafica  prediccion')
         st.write('El grado seria ', number)
         tamanio=dataframe[var].__len__()
@@ -2192,7 +2211,7 @@ def prediccion_mundial():
 
         r2=r2_score(Y,Y_NEW)
         x_new_main=0.0
-        x__new_max=50.0
+        x__new_max=float(valor)
 
         X_NEW=np.linspace(x_new_main,x__new_max,50)
 
@@ -2238,7 +2257,7 @@ def prediccion_mundial():
 
         r2=r2_score(Y2,Y_NEW2)
         x_new_main=0.0
-        x__new_max=50.0
+        x__new_max=float(valor)
 
         X_NEW2=np.linspace(x_new_main,x__new_max,50)
 
@@ -2258,6 +2277,10 @@ def prediccion_mundial():
         plt.savefig('Prediccion_Muertes_en_el_Mundo.png')
         plt.show()
         st.pyplot()
+        st.markdown('### La prediccion de Infectados alrededor del mundo en el dia '+str(valor)+ 'es de '+str(Y_NEW[int(Y_NEW.size - 1)][0])+ ' casos de COVID-19')
+        valor_prediccion='La prediccion de Infectados alrededor del mundo en el dia   '+str(valor)+ 'es de '+str(Y_NEW[int(Y_NEW.size - 1)][0]) + ' casos de COVID-19'
+        st.markdown('### La prediccion de muertes alrededor del mundo en el dia '+str(valor)+ 'es de '+str(Y_NEW2[int(Y_NEW2.size - 1)][0])+ ' muertes por  COVID-19')
+        valor_prediccion2='La prediccion de muertes alrededor del mundo en el dia   '+str(valor)+ 'es de '+str(Y_NEW2[int(Y_NEW2.size - 1)][0]) + ' muertes pór COVID-19'
 
         export_as_pdf = st.button("Export Report")
         if export_as_pdf:
@@ -2270,12 +2293,13 @@ def prediccion_mundial():
 
 
             pdf.set_font('Times', 'B', 12)
+            pdf.multi_cell(200,10,txt=valor_prediccion,align='J')
 
             pdf.multi_cell(200,10,txt=titulo1,align='J')
 
 
             pdf.image('Prediccion_casos_en_el_Mundo.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
-
+            pdf.multi_cell(200,10,txt=valor_prediccion2,align='J')
             pdf.multi_cell(200,10,txt=titulo2,align='J')
 
             pdf.add_page()
@@ -2308,7 +2332,7 @@ def Comparacion_Infectados_Vacunados_Pais():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo casos  o confirmited ',
@@ -2432,7 +2456,7 @@ def Tendencia_Infectados_dia():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo casos  o confirmited ',
@@ -2585,7 +2609,7 @@ def Comportamiento_Casos_Municipio():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo municipio ',
@@ -2749,7 +2773,7 @@ def prediccion_ultimo_dia():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo muertes  ',
@@ -2805,7 +2829,7 @@ def prediccion_ultimo_dia():
 
         r2=r2_score(Y,Y_NEW)
         x_new_main=0
-        x__new_max=400
+        x__new_max=float(365)
 
 
 
@@ -2821,24 +2845,30 @@ def prediccion_ultimo_dia():
 
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
 
-        plt.title("Prediccion de casos  en el ultimo dia del  año por COVID-19 "+pais+title)
-        Titulo_grafo="Grafica polinial de  la " +"Prediccion de casos  en el primer año por COVID-19 "+pais+title
+        plt.title("Prediccion de muertes  en el ultimo dia del  año por COVID-19 "+pais+title)
+        Titulo_grafo="Grafica polinial de  la " +"Prediccion de muertes  en el primer año por COVID-19 "+pais+title
         plt.xlabel('#dias')
         plt.ylabel('CASOS COVID-19')
         plt.savefig('PrediccionUltimoDia.png')
         plt.show()
         st.pyplot()
+
+
+        st.markdown('### La prediccion de muertes en el  ultimo dia del primer año '+'es de '+str(Y_NEW[int(Y_NEW.size - 1)][0]))
+        valor_prediccion='La prediccion de muertes en el ultimo dia del primer año   '+'es de '+str(Y_NEW[int(Y_NEW.size - 1)][0])
+
         export_as_pdf = st.button("Export Report")
         if export_as_pdf:
             pdf = FPDF()
             pdf.add_page()
             pdf.set_xy(0, 0)
             pdf.set_font('Times', 'B', 20)
-            titulo_pdf="Prediccion de la cantidad de casos del virus COVID-19 en el ultimo dia del primer año "
+            titulo_pdf="Prediccion de la cantidad de muertes del virus COVID-19 en el ultimo dia del primer año "
             pdf.multi_cell(200,10,txt=titulo_pdf,align='J')
 
 
             pdf.set_font('Times', 'B', 15)
+            pdf.multi_cell(200,10,txt=valor_prediccion,align='J')
 
             pdf.multi_cell(200,10,txt=Titulo_grafo,align='J')
 
@@ -2876,7 +2906,7 @@ def prediccion_casos_anio():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo casos  ',
@@ -2952,7 +2982,7 @@ def prediccion_casos_anio():
 
         r2=r2_score(Y,Y_NEW)
         x_new_main=0
-        x__new_max=400
+        x__new_max=float(arreglo.__len__())
 
 
 
@@ -2975,6 +3005,11 @@ def prediccion_casos_anio():
         plt.show()
         st.pyplot()
         export_as_pdf = st.button("Export Report")
+
+
+        st.markdown('### La prediccion de Infectados en el año '+str(anio)+ 'es de '+str(Y_NEW[int(Y_NEW.size - 1)][0])+ ' casos de COVID-19')
+        valor_prediccion='La prediccion de Infectados en el año  '+str(anio)+ 'es de '+str(Y_NEW[int(Y_NEW.size - 1)][0]) + ' casos de COVID-19'
+
         if export_as_pdf:
             pdf = FPDF()
             pdf.add_page()
@@ -2985,7 +3020,7 @@ def prediccion_casos_anio():
 
 
             pdf.set_font('Times', 'B', 15)
-
+            pdf.multi_cell(200,10,txt=valor_prediccion,align='J')
             pdf.multi_cell(200,10,txt=Titulo_grafo,align='J')
 
 #plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
@@ -3025,7 +3060,7 @@ def Porcentaje_Hombres_Covid():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo hombres  o men ',
@@ -3168,7 +3203,7 @@ def porcentaje_muertes_p():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(str(dataframe[var]))
+        st.write(dataframe[var])
 
         var1 = st.selectbox(
         'Seleccione el campo muertes  o death ',
