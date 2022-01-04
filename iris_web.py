@@ -141,7 +141,7 @@ def Tendencia_Covid_Pais():
 
         plt.plot(prediction_space, reg.predict(prediction_space))
         plt.show()
-        plt.savefig('E:\\TendendiaCovid_paisLineal.png')
+        plt.savefig('TendendiaCovid_paisLineal.png')
         st.pyplot()
         image7 = Image.open('tendenciaa.png')
 
@@ -207,7 +207,7 @@ def Tendencia_Covid_Pais():
         texto2="Grafica Polinomial Tendecia de casos de COVID-19 en el pais "+pais+title
         plt.xlabel('#')
         plt.ylabel('Casos de COVID-19')
-        plt.savefig('E:\\TendendiaCovid_paisPolinomial.png')
+        plt.savefig('TendendiaCovid_paisPolinomial.png')
         plt.show()
         st.pyplot()
 
@@ -227,14 +227,14 @@ def Tendencia_Covid_Pais():
 
 
 
-            pdf.image('E:\\TendendiaCovid_paisLineal.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('TendendiaCovid_paisLineal.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
             pdf.multi_cell(200,10,txt=texto,align='J')
 
             pdf.add_page()
             pdf.multi_cell(200,10,txt=texto2,align='J')
 
 
-            pdf.image('E:\\TendendiaCovid_paisPolinomial.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.image('TendendiaCovid_paisPolinomial.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
             pdf.output('TendendiaCovid_pais.pdf', 'F')
 
