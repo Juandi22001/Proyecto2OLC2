@@ -1909,38 +1909,51 @@ def indice_progresion():
     if uploaded_file is not None:
 
 
-        st.info("escoja Los campos que considere nescesarios para realizar la tasa de muertes por COVID-19")
+        st.info("escoja Los campos que considere nescesarios para realizar el indice de progresion")
         var = st.selectbox(
-        'Seleccione el casos ',
+        'Seleccione el campo  casos ',
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-
+        dataframe[var]=dataframe[var].fillna(0)
         st.write(dataframe[var])
+        var1 = st.selectbox(
+        'Seleccione el campo pruebas ',
+        (dataframe.columns))
+        opcion2=var.upper()
+        st.write(opcion2)
+        dataframe[var1]=dataframe[var1].fillna(0)
+        st.write(dataframe[var1])
 
         dias = st.number_input('Inserte numero de dias  para poder  ver la progresion de la pandemia')
         st.write('numero de dias ', dias)
         tamanio=int(dias)
         arreglo=[]
         casosar=[]
+        pruebasar=[]
         for i in range (0,tamanio):
             arreglo.append(i)
         casos=dataframe[var]
 
         df=pd.DataFrame({
             "casos":dataframe[var],
+            "pruebas": dataframe[var1]
                 })
         st.write(df)
         cont1=0
         total_casos=0
+        total_pruebas=0
         for i in df.itertuples():
             cont1=cont1+1
             if cont1 <= tamanio:
                 casosar.append(i.casos)
                 total_casos=int(i.casos)+total_casos
+                pruebasar.append(i.pruebas)
+                total_pruebas=int(i.pruebas)+total_pruebas
 
-        st.info('En '+str(tamanio)+' dias han habido '+str(total_casos)+' casos de COVID-19')
-        info='En '+str(tamanio)+' dias han habido '+str(total_casos)+' casos de COVID-19'
+        indice=dataframe[var].sum()-total_casos/dataframe[var1].sum()-total_pruebas
+        st.info('En '+str(tamanio)+' dias han habido '+str(total_casos)+' casos de COVID-19' +' Y tambien se han hecho  '+str(total_pruebas)+'pruebas de COVID-19 eso da como resultado que el indice de progresion de la pandemia ascienda a la cantidad de' +str(round(indice,2)))
+        info='En '+str(tamanio)+' dias han habido '+str(total_casos)+' casos de COVID-19' +' Y tambien se han hecho  '+str(total_pruebas)+'pruebas de COVID-19 eso da como resultado que el indice de progresion de la pandemia ascienda a la cantidad de' +str(round(indice,2))
 
         number = st.number_input('Inserte el grado  del que desea hacer la grafica de casos de covid-19')
         st.write('El grado seria ', number)
@@ -1955,6 +1968,7 @@ def indice_progresion():
         st.set_option('deprecation.showPyplotGlobalUse', False)
         X_TRANSF=polynomial_features.fit_transform(X)
 
+
         model= LinearRegression()
         model.fit(X_TRANSF,Y)
 
@@ -1968,6 +1982,8 @@ def indice_progresion():
 
 
         X_NEW=np.linspace(x_new_main,x__new_max,200)
+
+
 
         X_NEW=X_NEW[:,np.newaxis]
         X_NEW_TRANSF =polynomial_features.fit_transform(X_NEW)
