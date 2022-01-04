@@ -4,7 +4,7 @@ import streamlit as st
 
 import pandas as pd
 from PIL import Image
-
+import base64
 import pandas as pd
 from io  import StringIO
 
@@ -17,6 +17,8 @@ from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 from streamlit.elements import selectbox
 image4 = Image.open('inicio.png')
+
+from fpdf import FPDF
 
 st.image(image4, width=3000,use_column_width='auto')
 
@@ -41,6 +43,9 @@ def Inicio():
 
 
 
+def create_download_link(val, filename):
+    b64 = base64.b64encode(val)  # val looks like b'...'
+    return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="{filename}.pdf">Download file</a>'
 
 
 
@@ -130,6 +135,7 @@ def Tendencia_Covid_Pais():
 
         plt.plot(prediction_space, reg.predict(prediction_space))
         plt.show()
+        plt.savefig('E:\\TendendiaCovid_pais.png')
         st.pyplot()
         image7 = Image.open('tendenciaa.png')
 
@@ -137,9 +143,34 @@ def Tendencia_Covid_Pais():
         st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
         st.info(reg.coef_)
         if reg.coef_ < 0:
+
             st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  los casos de covid 19 han ido disminuyendo considerablemente ')
+            texto='La pendiente de una recta es negativa cuando la recta es decreciente , es decir que  debido a las restricciones  los casos de covid 19 han ido disminuyendo considerablemente '
         else:
             st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   los casos en este pais  han ido aumentando considerablemente  alo largo de los ultimos reportes ')
+            texto='La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   los casos en este pais  han ido aumentando considerablemente  alo largo de los ultimos reportes '
+
+
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('arial', 'B', 12)
+            pdf.multi_cell(200,10,txt=texto,align='J')
+            pdf.image('E:\\TendendiaCovid_pais.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.output('TendendiaCovid_pais.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "testfile")
+            st.markdown(html, unsafe_allow_html=True)
+
+
+
+
+
+
+
+
 
 
         st.markdown('## Grafica Polinomial  ')
