@@ -20,7 +20,8 @@
 :round_pushpin: [Metodo Isin()](#id4)
 :round_pushpin: [Metodo drop_duplicates()](#id5)
 :round_pushpin: [Metodo sum()](#id6)
-:round_pushpin: [Linear Regresion()](#id6)
+:round_pushpin: [Linear Regresion()](#id7)
+:round_pushpin: [PDF](#id8)
 
 <br>
 <br>
@@ -45,6 +46,6 @@
 ## :beginner: Linear Regresion , es una libreria de sticklearn, que basicamente es la que facilita hacer todas las predicciones, todas las tendecias realizadas en este proyecto<a name="id7"></a>
 ![7](https://github.com/Juandi22001/Proyecto2OLC2/blob/main/COMPI2/img/data6.png)
 
-## :beginner: Tendencia de la vacunacion de un pais<a name="id8"></a>
-![8](./img/reporte_8.png)
+## :beginner:  Para la crecion de los reportes,se utiliza siempre una libreria llamada fdpf ,  que  basicamente crea un objeto PDF propio de su libreria para en ese objeto guardar todo lo que consideremos nescesario para poder guardar el reporte en formato PDF y que el usuario pueda ver a detalle los resultados del analisis <a name="id8"></a>
+![8](https://github.com/Juandi22001/Proyecto2OLC2/blob/main/COMPI2/img/data7.png)
 
