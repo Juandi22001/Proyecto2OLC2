@@ -3536,12 +3536,35 @@ def Muertes_por_Region():
 
 op = st.multiselect(
     'Bienvenido escoja la opcion que desea ',
-        ['Inicio☄️', 'Tendencia de Covid por pais📈','Inidice de Progresión de la pandemia.🦠','Predicción de Infectados en un País🧮','Predicción de mortalidad por COVID en un Departamento🧮','Análisis del número de muertes por coronavirus en un País☠️'
-            ,'Tendencia de la vacunación de en un País💉📈','Tendencia de casos confirmados de Coronavirus en un departamento de un País📈'
-        ,'Predicción de mortalidad por COVID en un Pais🧮','Muertes promedio por casos confirmados y edad de covid 19 en un País☠️','Ánalisis Comparativo entres 2 o más paises o continentes🌎','Ánalisis Comparativo de Vacunación entre 2 paises💉'
-        ,'Muertes según regiones de un país - Covid 19☠️','Predicciones de casos y muertes en todo el mundo🧮','Tasa de comportamiento de casos activos en relación al número de muertes en un continente☠️📈🦠','Tasa de mortalidad por coronavirus (COVID-19) en un país📈☠️'
-        ,'Predicción de casos de un país para un año🧮','Predicción de casos confirmados por día🧮', 'Predicción de muertes en el último día del primer año de infecciones en un país.☠️','Comportamiento y clasificación de personas infectadas por COVID-19 por municipio en un País.🦠','Factores de muerte por COVID-19 en un país.☠️','Porcentaje de muertes frente al total de casos en un país, región o continente.%📶☠️🌎','Porcentaje de hombres infectados por covid-19 en un País desde el primer caso activo🙍🏻‍♂️' ,'Tendencia del número de infectados por día de un País.🗓️📈',
-        'Comparación entre el número de casos detectados y el número de pruebas de un país 💊💉'])
+        ['Inicio☄️', 'Tendencia de Covid por pais📈',
+            'Predicción de Infectados en un País🧮',
+            'Inidice de Progresión de la pandemia.🦠',
+            'Predicción de mortalidad por COVID en un Departamento🧮',
+            'Predicción de mortalidad por COVID en un Pais🧮',
+            'Análisis del número de muertes por coronavirus en un País☠️',
+            'Tendencia del número de infectados por día de un País.🗓️📈',
+            'Predicción de casos de un país para un año🧮',
+            'Tendencia de la vacunación de en un País💉📈',
+            'Ánalisis Comparativo de Vacunación entre 2 paises💉',
+            'Porcentaje de hombres infectados por covid-19 en un País desde el primer caso activo🙍🏻‍♂️',
+            'Ánalisis Comparativo entres 2 o más paises o continentes🌎',
+            'Muertes promedio por casos confirmados y edad de covid 19 en un País☠️',
+            'Muertes según regiones de un país - Covid 19☠️',
+            'Tendencia de casos confirmados de Coronavirus en un departamento de un País📈',
+            'Porcentaje de muertes frente al total de casos en un país, región o continente.%📶☠️🌎',
+            'Tasa de comportamiento de casos activos en relación al número de muertes en un continente☠️📈🦠',
+            'Comportamiento y clasificación de personas infectadas por COVID-19 por municipio en un País.🦠',
+            'Predicción de muertes en el último día del primer año de infecciones en un país.☠️',
+            'Predicciones de casos y muertes en todo el mundo🧮',
+            'Tasa de mortalidad por coronavirus (COVID-19) en un país📈☠️',
+            'Factores de muerte por COVID-19 en un país.☠️',
+            'Comparación entre el número de casos detectados y el número de pruebas de un país 💊💉',
+            'Predicción de casos confirmados por día🧮'])
+
+
+
+
+
 
 
 st.write('You selected:', op)
