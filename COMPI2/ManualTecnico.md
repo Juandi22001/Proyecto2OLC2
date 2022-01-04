@@ -26,7 +26,7 @@
 ![2](https://github.com/Juandi22001/Proyecto2OLC2/blob/main/COMPI2/img/data.PNG)
 
 ## :beginner: Para parametrizar las varaibles , la variable var  valga la redundancia es de suma importancia ya que la aplicacion le indica al usuario que  columna utilizar y  la opcion que el usuario se guarda en esa variable y gracias a eso es mucho mas facil ir parametrizando los valores  y asi obtener resultados<a name="id3"></a>
-![3](https://github.com/Juandi22001/Proyecto2OLC2/blob/main/COMPI2/img/data2.PNG)
+![3](https://github.com/Juandi22001/Proyecto2OLC2/blob/main/COMPI2/img/data2.png)
 
 ## :beginner: Indice de progresion de la pandemia<a name="id4"></a>
 ![4](./img/reporte_4.png)
