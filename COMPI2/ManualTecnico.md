@@ -15,3 +15,9 @@
 # Views
 
 :round_pushpin: [Landing](#id1)
+
+<br>
+<br>
+# Reportes
+## :beginner: Landing<a name="id1"></a>
+![1](./img/reporte_1.png)
