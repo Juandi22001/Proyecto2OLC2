@@ -7,6 +7,7 @@
 ### Escuela de vacaciones diciembre 2022
 ### Juan Diego Alvarado Salguero
 ### 201807335
+### Manual de Usuario
 
 
 ---
@@ -152,11 +153,11 @@ CORONAVIRUS DATA ANALYSIS WITH MACHINE LEARNING es una aplicación desarollada c
 # Flujo
 
 1. Arrastrar el archivo al apartado correspondiente
-![f1](./img/flux_1.png)  
+![f1](./img/flux_1.png)
 2. Se muestran los resultados
-![f2](./img/flux_2.png)  
+![f2](./img/flux_2.png)
 3. Se pueden hacer filtros egún cada uno de los reportes solicitados.
-![f3](./img/flux_3.png) 
+![f3](./img/flux_3.png)
 
 
 

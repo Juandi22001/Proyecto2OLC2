@@ -2426,7 +2426,7 @@ def prediccion_mundial():
 
             pdf.multi_cell(200,10,txt=titulo2,align='J')
 
-
+            pdf.add_page()
             pdf.image('E:\\Prediccion_Muertes_en_el_Mundo.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
 
             pdf.output('Predicciones_Mundiales.pdf', 'F')
@@ -2516,14 +2516,15 @@ def Comparacion_Infectados_Vacunados_Pais():
         plt.scatter(X[:,0],X[:,1], c=kmeans.labels_, cmap='rainbow')
         plt.title("Compracion entre  el numero de casos detectados y el numero de pruebas del pais :"+pais)
         plt.ylabel('pruebas de COVID-19 ')
+        titulopd="Grafica de Compracion entre  el numero de casos detectados y el numero de pruebas del pais :"+pais
         plt.xlabel('Numero de contagios  de COVID-19')
 #comment this line to get only the points
         plt.scatter(kmeans.cluster_centers_[:,0], kmeans.cluster_centers_[:,1], color='black')
-
+        plt.savefig('E:\\Comparacion_casos_pruebas.png')
         plt.show()
         st.pyplot()
         st.info('Para este analisis se ha decidido dividir  los datos en 3 regiones   para mostrar de una mejor manera los datos  la region 1 es de color morado , la region 2 es colorrojo y la region 3 es de color cyan esto se hizo para observar de una mejor manera la comparacion entre los casos de covid 19 y las puebtas que ha realizao este pais ')
-
+        info_pdf ='Para este analisis se ha decidido dividir  los datos en 3 regiones   para mostrar de una mejor manera los datos  la region 1 es de color morado , la region 2 es colorrojo y la region 3 es de color cyan esto se hizo para observar de una mejor manera la comparacion entre los casos de covid 19 y las puebtas que ha realizao este pais '
 
 
 
@@ -2542,10 +2543,37 @@ def Comparacion_Infectados_Vacunados_Pais():
         )
 
         st.write(grafica)
-
-
-
         st.bar_chart(grafica)
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pdf="Compracion entre el numero de casos Y pruebas en un pais "
+            pdf.multi_cell(200,10,txt=titulo_pdf,align='J')
+
+
+            pdf.set_font('Times', 'B', 12)
+
+            pdf.multi_cell(200,10,txt=titulopd,align='J')
+
+
+            pdf.image('E:\\Comparacion_casos_pruebas.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+            pdf.multi_cell(200,10,txt=info_pdf,align='J')
+
+
+            pdf.output('Comparacion_casos_pruebas.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "Comparacion_casos_pruebas")
+            st.markdown(html, unsafe_allow_html=True)
+
+
+
+
+
+
 def Tendencia_Infectados_dia():
     image1121 = Image.open('tendencia_dia.png')
 
@@ -2621,10 +2649,11 @@ def Tendencia_Infectados_dia():
         prediction_space = np.linspace(min(X), max(X)).reshape(-1, 1)
         plt.scatter(X, Y, color='blue')
 
-        plt.title("TENDENCIA DE VACUNACION  DEL PAIS:"+pais)
-        plt.ylabel('VACUNACION en '+pais)
+        plt.title("TENDENCIA DE Infectados por dia  DEL PAIS:"+pais)
+        plt.ylabel('Casos COVID-19 en '+pais)
         plt.xlabel('#')
         plt.plot(prediction_space, reg.predict(prediction_space))
+        plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
         plt.show()
         st.pyplot()
         image7 = Image.open('tendenciaa.png')
@@ -2632,11 +2661,12 @@ def Tendencia_Infectados_dia():
         st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
         st.info(reg.coef_)
         if reg.coef_ < 0:
-            st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que   el pais  '+pais+' no ha logrado mantender una tendencia ascendente con respecto a su cadena de vacunacion   ')
+            st.error('La pendiente de una recta es negativa cuando la recta es decreciente , es decir que los casos han disminuido considerablemente en el pais   ')
+            info_pd='La pendiente de una recta es negativa cuando la recta es decreciente , es decir que los casos han disminuido considerablemente en el pais'
         else:
-            st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion')
-
-        st.markdown('## Grafica Polinomial de la vacunacion del pais : '+pais)
+            st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   quiere decir que los casos han aumentado en ese pais')
+            info_pd='La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa   quiere decir que los casos han aumentado en ese pais'
+        st.markdown('## Grafica Polinomial de los casos por dia  del pais : '+pais)
         number = st.number_input('Inserte el grado  del que desea hacer la grafica  ')
         st.write('El grado seria ', number)
         X2=np.asarray(arreglo)
@@ -2669,14 +2699,46 @@ def Tendencia_Infectados_dia():
 
         plt.plot(X_NEW,Y_NEW,color='red',linewidth=4)
         plt.grid()
-        plt.xlim(x_new_main,x__new_max)
-        plt.ylim(0,1000)
+
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
         plt.title("Tendecia de casos   de COVID-19 por dia en el pais "+pais+title)
+        titulo_pd="Grafica polinomial de la " +"Tendecia de casos   de COVID-19 por dia en el pais "+pais+title
         plt.xlabel('#')
         plt.ylabel('Casos de COVID-19')
+        plt.savefig('E:\\Tendencia_Infectados_diaPolinomial.png')
         plt.show()
         st.pyplot()
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pdf="Tendencia de infectados por COVID-19 en "+str(dias)+" dias"
+            pdf.multi_cell(200,10,txt=titulo_pdf,align='J')
+
+
+            pdf.set_font('Times', 'B', 12)
+
+            pdf.multi_cell(200,10,txt="Grafica Lineal de casos de Covid-19",align='J')
+
+#plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
+            pdf.image('E:\\Tendencia_Infectados_diaLineal.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.multi_cell(200,10,txt=info_pd,align='J')
+            pdf.add_page()
+            pdf.multi_cell(200,10,txt=titulo_pd,align='J')
+            pdf.image('E:\\Tendencia_Infectados_diaPolinomial.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+
+
+
+
+            pdf.output('Tendencia_Infectados_dia.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "Tendencia_Infectados_dia")
+            st.markdown(html, unsafe_allow_html=True)
+
+
 
 def Comportamiento_Casos_Municipio():
     image44 = Image.open('comportamiento_personas_covid.png')
@@ -2816,10 +2878,38 @@ def Comportamiento_Casos_Municipio():
 
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
         plt.title("Comportamiento de casos de COVID-19 "+pais+title)
+        Titulo_grafo="Grafica Polinomial del ""Comportamiento de casos de COVID-19 "+pais+title
         plt.xlabel('#Municipio')
         plt.ylabel('casos de COVID-19')
+        plt.savefig('E:\\ComportamientoCasos.png')
         plt.show()
         st.pyplot()
+
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pdf="Comportamiento de Casos de Covid por Departamento"
+            pdf.multi_cell(200,10,txt=titulo_pdf,align='J')
+
+
+            pdf.set_font('Times', 'B', 15)
+
+            pdf.multi_cell(200,10,txt=Titulo_grafo,align='J')
+
+#plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
+            pdf.image('E:\\ComportamientoCasos.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+
+
+
+            pdf.output('ComportamientoCasos.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "ComportamientoCasos")
+            st.markdown(html, unsafe_allow_html=True)
+
 
 
 
@@ -2931,11 +3021,41 @@ def prediccion_ultimo_dia():
         plt.grid()
 
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
-        plt.title("Prediccion de casos  en el primer año por COVID-19 "+pais+title)
+
+        plt.title("Prediccion de casos  en el ultimo dia del  año por COVID-19 "+pais+title)
+        Titulo_grafo="Grafica polinial de  la " +"Prediccion de casos  en el primer año por COVID-19 "+pais+title
         plt.xlabel('#dias')
         plt.ylabel('CASOS COVID-19')
+        plt.savefig('E:\\PrediccionUltimoDia.png')
         plt.show()
         st.pyplot()
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pdf="Prediccion de la cantidad de casos del virus COVID-19 en el ultimo dia del primer año "
+            pdf.multi_cell(200,10,txt=titulo_pdf,align='J')
+
+
+            pdf.set_font('Times', 'B', 15)
+
+            pdf.multi_cell(200,10,txt=Titulo_grafo,align='J')
+
+#plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
+            pdf.image('E:\\PrediccionUltimoDia.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+
+
+
+            pdf.output('PrediccionUltimoDia.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "PrediccionUltimoDia")
+            st.markdown(html, unsafe_allow_html=True)
+
+
+
 
 
 
@@ -3062,10 +3182,41 @@ def prediccion_casos_anio():
 
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
         plt.title("Prediccion de casos  en el año "+str(anio)+"para el pais "+pais+title)
+        Titulo_grafo="Prediccion de casos  en el año "+str(anio)+"para el pais "+pais+title
         plt.xlabel('#dias')
         plt.ylabel('CASOS COVID-19')
+        plt.savefig('E:\\PrediccionCasos_anio.png')
         plt.show()
         st.pyplot()
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pdf="Prediccion de casos de COVID-19   por año "
+            pdf.multi_cell(200,10,txt=titulo_pdf,align='J')
+
+
+            pdf.set_font('Times', 'B', 15)
+
+            pdf.multi_cell(200,10,txt=Titulo_grafo,align='J')
+
+#plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
+            pdf.image('E:\\PrediccionCasos_anio.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+
+
+
+            pdf.output('PrediccionCasos_anio.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "PrediccionCasos_anio")
+            st.markdown(html, unsafe_allow_html=True)
+
+
+
+
+
 
 
 def Porcentaje_Hombres_Covid():
@@ -3132,6 +3283,7 @@ def Porcentaje_Hombres_Covid():
         hombres=casos_pais[var1].sum()
         porcentaje_hombres=hombres/casos
         st.info('Se analizaron los datos   y se encontro que la cantidad de muertes en el pais '+pais+' asciende a la cantidad de '+str(casos)+' y la cantidad de hombres infectados a la fecha asciende a la cantidad de '+str(hombres)+' eso nos da como resultado  que el porcentaje de hombres contagiados  respecto al total de casos del  pais escogido es de '+str(round(porcentaje_hombres*100,2))+'%')
+        info_rep='Se analizaron los datos   y se encontro que la cantidad de muertes en el pais '+pais+' asciende a la cantidad de '+str(casos)+' y la cantidad de hombres infectados a la fecha asciende a la cantidad de '+str(hombres)+' eso nos da como resultado  que el porcentaje de hombres contagiados  respecto al total de casos del  pais escogido es de '+str(round(porcentaje_hombres*100,2))+'%'
         number = st.number_input('Inserte el grado  del que desea hacer la grafica  ')
         st.write('El grado seria ', number)
 
@@ -3185,10 +3337,43 @@ def Porcentaje_Hombres_Covid():
         plt.ylim(0,10000)
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
         plt.title("CAsOS  de COVID-19 en el pais "+pais+title)
+        Titulo_grafo="Grafica Polinomial de los casos de COVID-19 en el pais "+pais+title
         plt.xlabel('#dias')
         plt.ylabel('CASOS de COVID-19')
+        plt.savefig('E:\\Porcentaje_Hombres.png')
         plt.show()
         st.pyplot()
+
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pdf="Prediccion de casos de COVID-19   por año "
+            pdf.multi_cell(200,10,txt=titulo_pdf,align='J')
+
+            pdf.set_font('Times', 'B', 12)
+
+            pdf.multi_cell(200,10,txt=info_rep,align='J')
+
+
+            pdf.set_font('Times', 'B', 15)
+
+            pdf.multi_cell(200,10,txt=Titulo_grafo,align='J')
+
+#plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
+            pdf.image('E:\\Porcentaje_Hombres.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+
+
+
+            pdf.output('Porcentaje_Hombres.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "Porcentaje_Hombres")
+            st.markdown(html, unsafe_allow_html=True)
+
+
 
 def porcentaje_muertes_p():
     image442 = Image.open('porcentaje_muertes_region.png')
@@ -3219,7 +3404,7 @@ def porcentaje_muertes_p():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
 
         var1 = st.selectbox(
@@ -3249,7 +3434,7 @@ def porcentaje_muertes_p():
         porcentaje_hombres=muertes/casos
         st.info('  Al analizar los datos se encuentro que por desgracia la cantidad de muertes en  asicende a la cantidad  de '+str(muertes) +' y  la cantidad de casos en '+pais+'asciende a la cantidad de '+str(casos) +'eso quiere decir  que el porcentaje de muertes  con respecto a la cantidad de casos en ' + pais+ ' es  de '+str(round(porcentaje_hombres*100,2))+'%')
 
-
+        info_rep=' Al analizar los datos se encuentro que por desgracia la cantidad de muertes en  asicende a la cantidad  de '+str(muertes) +' y  la cantidad de casos en '+pais+'asciende a la cantidad de '+str(casos) +'eso quiere decir  que el porcentaje de muertes  con respecto a la cantidad de casos en ' + pais+ ' es  de '+str(round(porcentaje_hombres*100,2))+'%'
         X=np.asarray(casos_pais[var2]).reshape(-1,1)
         Y=casos_pais[var1]
         st.set_option('deprecation.showPyplotGlobalUse', False)
@@ -3260,11 +3445,42 @@ def porcentaje_muertes_p():
         plt.scatter(X[:,0], Y, color='blue',cmap='rainbow')
 
         plt.title("Muertes por COVID-19 vs el numero de casos por COVID-19 en:"+pais)
+        Titulo_grafo= "Grafica Polinomial de "+"Muertes por COVID-19 vs el numero de casos por COVID-19 en:"+pais
         plt.ylabel('Numero de muertes  en  '+pais)
         plt.xlabel('Casos por COVID-19')
+        plt.savefig('E:\\Muertes_vs_casos.png')
         #plt.plot(prediction_space, reg.predict(prediction_space))
         plt.show()
         st.pyplot()
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pdf="Muertes por COVID-19 vs el numero de casos por COVID-19 "
+            pdf.multi_cell(200,10,txt=titulo_pdf,align='J')
+
+            pdf.set_font('Times', 'B', 12)
+
+            pdf.multi_cell(200,10,txt=info_rep,align='J')
+
+
+            pdf.set_font('Times', 'B', 15)
+
+            pdf.multi_cell(200,10,txt=Titulo_grafo,align='J')
+
+#plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
+            pdf.image('E:\\Muertes_vs_casos.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+
+
+
+
+            pdf.output('Muertes_vs_casos.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "Muertes_vs_casos")
+            st.markdown(html, unsafe_allow_html=True)
+
 def Tasa_Comportamiento_Muertes_Covid():
     image122 = Image.open('tasa_comportamiento_casos_muertes.png')
 
@@ -3292,7 +3508,7 @@ def Tasa_Comportamiento_Muertes_Covid():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
         var1 = st.selectbox(
         'Seleccione el campo casos ',
@@ -3323,6 +3539,7 @@ def Tasa_Comportamiento_Muertes_Covid():
         st.markdown('### Casos Activos :'+str(casos))
         st.markdown('### Muertes  :'+str(muertes))
         st.info('Al analizar tanto los casos activos en el continente '+continente+'  como la cantidad de muertes  se ha logrado determinar que la tasa de comportamiento es '+str(round(tasa,2))+' al obtener esta tasa podemos sacar una unica conclusion que entre menor sea la tasa es peor para el pais ya que es mas probable que mueran mas personas mientras que si la tasa presenta un valor mayor  habran en teoria menos muertes en el continente ')
+        info_rep='Al analizar tanto los casos activos en el continente '+continente+'  como la cantidad de muertes  se ha logrado determinar que la tasa de comportamiento es '+str(round(tasa,2))+' al obtener esta tasa podemos sacar una unica conclusion que entre menor sea la tasa es peor para el pais ya que es mas probable que mueran mas personas mientras que si la tasa presenta un valor mayor  habran en teoria menos muertes en el continente '
         st.markdown('## Grafica de comportamiento ')
         number = st.number_input('Inserte el grado  del que desea hacer la grafica  prediccion')
         st.write('El grado seria ', number)
@@ -3361,10 +3578,36 @@ def Tasa_Comportamiento_Muertes_Covid():
 
         title='Grado={}; RMSE ={}; R2 ={}'.format(nb_degree,round(rmse,2),round(r2,2))
         plt.title("Tasa de comportamiento de casos activos de COVID-19 en relacion a las muertes en el continente de  "+continente+title)
+        Titulo_grafo="Grafica Polinomial de la "+"Tasa de comportamiento de casos activos de COVID-19 en relacion a las muertes en el continente de  "+continente+title
         plt.ylabel('#Casos Activos')
         plt.xlabel('Muertes por COVID-19')
+        plt.savefig('E:\\Tasa_comportamiento_activos_muertes_continente.png')
         plt.show()
         st.pyplot()
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pdf="Tasa de comportamiento de casos activos de COVID-19 en relacion a las muertes en un continente"
+            pdf.multi_cell(200,10,txt=titulo_pdf,align='J')
+
+            pdf.set_font('Times', 'B', 12)
+
+            pdf.multi_cell(200,10,txt=info_rep,align='J')
+
+
+            pdf.set_font('Times', 'B', 15)
+
+            pdf.multi_cell(200,10,txt=Titulo_grafo,align='J')
+
+#plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
+            pdf.image('E:\\Tasa_comportamiento_activos_muertes_continente.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.output('Tasa_comportamiento_activos_muertes_continente.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "Tasa_comportamiento_activos_muertes_continente")
+            st.markdown(html, unsafe_allow_html=True)
 
 
 def Muertes_por_Region():
@@ -3394,7 +3637,7 @@ def Muertes_por_Region():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        dataframe[var]=dataframe[var].fillna(0)
+
         st.write(dataframe[var])
         var1 = st.selectbox(
         'Seleccione el campo estado  o departamento ',
@@ -3454,7 +3697,7 @@ def Muertes_por_Region():
 
 
         st.table(Muertes_REGION)
-        tamanio=casos_pais[var1].__len__()
+        tamanio=Muertes_REGION.muertes.__len__()
 
         arreglo=[]
         for i in range (0,tamanio):
@@ -3469,10 +3712,12 @@ def Muertes_por_Region():
         plt.scatter(X[:,0], Y, color='blue',cmap='rainbow')
 
         plt.title("Muertes por regiones del PAIS:"+pais)
+
         plt.ylabel('Numero de muertes  en el  '+pais)
         plt.xlabel('#REGIONES')
         #plt.plot(prediction_space, reg.predict(prediction_space))
         plt.show()
+        plt.savefig('E:\\Muertes_Region.png')
         st.pyplot()
 
         #st.markdown('### Analizando la grafica  se encontro que la prendiente de la grafica mostrada es:')
@@ -3482,6 +3727,34 @@ def Muertes_por_Region():
         #else:
         #    st.info('La pendiente de una recta es positiva cuando la recta es creciente, es decir que a diferencia de una pendiente negativa      este pais ha logrado  mantener el ritmo en su  programa de vacunacion')
 
+        export_as_pdf = st.button("Export Report")
+        if export_as_pdf:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_xy(0, 0)
+            pdf.set_font('Times', 'B', 20)
+            titulo_pdf="Muertes por regiones del PAIS:"+pais
+
+            pdf.multi_cell(200,10,txt=titulo_pdf,align='J')
+
+
+
+
+#plt.savefig('E:\\Tendencia_Infectados_diaLineal.png')
+            pdf.image('E:\\Muertes_Region.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+            pdf.add_page()
+
+            pdf.set_font('Times', 'B', 10)
+
+            for i in df.itertuples():
+                textoo="REGION:"+str(i.regiones)+"#MUERTES:"+str(i.muertes)
+                pdf.multi_cell(200,10,txt=textoo,align='J')
+
+
+            pdf.output('Muertes_Region.pdf', 'F')
+
+            html = create_download_link(pdf.output(dest="S").encode("latin-1"), "Muertes_Region")
+            st.markdown(html, unsafe_allow_html=True)
 
 
 
