@@ -14,13 +14,13 @@
 
 # Views
 
-:round_pushpin: [Landing](#id1)
+:round_pushpin: [Abrir](#id1)
 
 <br>
 <br>
 # Reportes
-## :beginner: Landing<a name="id1"></a>
-![1](./img/Abrir_DATAFRAME.png)
+## :beginner: Inicio<a name="id2"></a>
+![1](./img/Abrir_DATAFRAME.jpg)
 
 ## :beginner: Inicio<a name="id2"></a>
 ![2](./img/reporte_2.png)
