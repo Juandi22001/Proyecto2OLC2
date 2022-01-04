@@ -19,6 +19,7 @@
 
 :round_pushpin: [Metodo Isin()](#id4)
 :round_pushpin: [Metodo drop_duplicates()](#id5)
+:round_pushpin: [Metodo sum()](#id6)
 <br>
 <br>
 # Reportes
@@ -36,8 +37,11 @@
 ## :beginner: Este metodo su funcion en el proyecto es simplemente el de evitar valores repetidos , es decir que en el archivo csv que se desee cargar vendran siempre datos repetidos , entonces gracias a este metodo propio de la libreria pandas es posible evitar la data repetida y asi   poder mostrarle al usuario los datos que el desea escoger pero  sin data repetida<a name="id5"></a>
 ![5](https://github.com/Juandi22001/Proyecto2OLC2/blob/main/COMPI2/img/data4.png)
 
-## :beginner: Prediccion de mortalidad por COVID en un Departamento<a name="id6"></a>
-![6](./img/reporte_6.png)
+## :beginner: El metodo sum , es junto al isin() quiza uno de los 2 metodos propios
+de la libreria pandas mas importantes en este proyecto , gracias a que basicamente
+sin esos 2 metodos el proyecto no podria ser funcional , este metodo sum() su funcion
+es simplemente la de sumar todos los campos de una posicion en un dataframe es decir si se tiene un arreglo en ese dataframe directamente en esa posicion va dar como resultado   la suma de todos los campos de ese dataframe<a name="id6"></a>
+![6](https://github.com/Juandi22001/Proyecto2OLC2/blob/main/COMPI2/img/data5.png)
 
 ## :beginner: Analisis del numero de muertes por coronavirus en un pais<a name="id7"></a>
 ![7](./img/reporte_7.png)
