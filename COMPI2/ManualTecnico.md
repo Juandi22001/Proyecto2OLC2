@@ -14,7 +14,7 @@
 
 # Views
 
-:round_pushpin: [Abrir](#id1)
+:round_pushpin: [AbrirDataFrame](#id2)
 
 <br>
 <br>
@@ -23,7 +23,7 @@
 ![1](./img/Abrir_DATAFRAME.jpg)
 
 ## :beginner: Inicio<a name="id2"></a>
-![2](./img/reporte_2.png)
+![2](./img/Abrir_DATAFRAME.jpg)
 
 ## :beginner: Tendencia de covid por pais<a name="id3"></a>
 ![3](./img/reporte_3.png)
