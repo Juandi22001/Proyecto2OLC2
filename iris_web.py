@@ -2305,6 +2305,7 @@ def prediccion_mundial():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
+        dataframe[var]=dataframe[var].fillna(0)
 
         st.write(dataframe[var])
 
