@@ -23,6 +23,36 @@ from fpdf import FPDF
 st.image(image4, width=3000,use_column_width='auto')
 
 #st.image(image, caption='Sunrise by the mountains')
+EXTENSION = st.radio(
+    "Escoja la extension del archivo",
+    ('CSV', 'xls', 'JSON'))
+uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+if uploaded_file is not None:
+    # To read file as bytes:
+    bytes_data = uploaded_file.getvalue()
+
+
+
+
+
+
+    # Can be used wherever a "file-like" object is accepted:
+
+    if EXTENSION =='CSV':
+        dataframe = pd.read_csv(uploaded_file)
+        st.write(dataframe)
+    elif EXTENSION=='JSON':
+        dataframe = pd.read_json(uploaded_file)
+        dataframe.to_csv('Prueba.csv')
+        dataframe=pd.read_csv('Prueba.csv')
+        st.write(dataframe)
+
+    elif EXTENSION=='xls':
+        dataframe = pd.read_excel(uploaded_file)
+        dataframe.to_csv('Prueba.csv')
+        dataframe=pd.read_csv('Prueba.csv')
+        st.write(dataframe)
+
 
 
 
@@ -62,25 +92,9 @@ def Tendencia_Covid_Pais():
 
     st.image(image4, width=1200,use_column_width='auto')
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+
+
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
-
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        dataframe.notna()
-        dataframe.fillna(0)
-        st.write(dataframe)
-
-
         st.info("escoja Los campos que considere nescesarios para realizar la Tendencia de casos por pais")
 
         var = st.selectbox(
@@ -88,7 +102,9 @@ def Tendencia_Covid_Pais():
         (dataframe.columns))
         opcion1=var.upper()
         st.write(opcion1)
-        st.write(dataframe[var])
+
+
+
 
 
         var1 = st.selectbox(
@@ -97,7 +113,7 @@ def Tendencia_Covid_Pais():
         opcion2=var1.upper()
         st.write(opcion2)
         dataframe[var1]=dataframe[var1].fillna(0)
-        st.write(dataframe[var1])
+
 
 
 
@@ -109,7 +125,10 @@ def Tendencia_Covid_Pais():
         st.markdown('# Pais escogido:'+pais)
 
         casos_pais=dataframe[dataframe[var].isin(pais_Escogido)]
-        st.write(casos_pais)
+        if EXTENSION != 'JSON':
+            st.write(casos_pais)
+
+
 
         tamanio=casos_pais[var1].__len__()
 
@@ -254,21 +273,9 @@ def Prediccion_Infectados_Pais(icon='pred.svg'):
     st.image(image2,width=1200,use_column_width='auto')
 
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
     if uploaded_file is not None:
     # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
 
         st.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
@@ -279,7 +286,7 @@ def Prediccion_Infectados_Pais(icon='pred.svg'):
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
 
         var1 = st.selectbox(
@@ -403,20 +410,10 @@ def Prediccion_Muertes_Departamento ():
     st.image(image10,width=1200,use_column_width='auto')
 
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+
     if uploaded_file is not None:
     # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
         st.write(dataframe)
         st.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
 
@@ -426,7 +423,7 @@ def Prediccion_Muertes_Departamento ():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo Muertes   ',
@@ -516,21 +513,9 @@ def Analisis_Muertes_por_Pais():
     st.image(image22,width=1200,use_column_width='auto')
 
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
 
         st.info("escoja Los campos que considere nescesarios para realizar el analisis")
@@ -543,7 +528,7 @@ def Analisis_Muertes_por_Pais():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo muertes  o deaths ',
@@ -655,22 +640,9 @@ def Tendencia_casos_Departamento():
 
 
 
-
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
     if uploaded_file is not None:
     # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
         st.info("escoja Los campos que considere nescesarios para realizar la Tendencia de casos por departamento")
 
@@ -680,7 +652,7 @@ def Tendencia_casos_Departamento():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo casos  o confirmited ',
@@ -818,21 +790,8 @@ def Prediccion_Muertes_dia():
     st.image(image111,width=1200,use_column_width='auto')
 
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
-
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
 
         st.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
@@ -843,7 +802,7 @@ def Prediccion_Muertes_dia():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo casos  o confirmited ',
@@ -954,21 +913,9 @@ def Factores_Muertes():
 
     st.image(mage12, width=1200,use_column_width='auto')
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
         st.info("escoja Los campos que considere nescesarios para ver los factores de muerted de la pandemia")
         var = st.selectbox(
@@ -977,7 +924,7 @@ def Factores_Muertes():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
         st.info(" si escogio los campos correctamente  proceda a escoger el pais para  realizar el analisis")
         pais_v = st.text_input('',placeholder='Escriba al pais al que quiere realizar el analisis')
         pais_Escogido_v=[pais_v]
@@ -1089,21 +1036,8 @@ def Prediccion_Muertes_Pais():
     st.image(image11,width=1200,use_column_width='auto')
 
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
 
         st.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
@@ -1114,7 +1048,7 @@ def Prediccion_Muertes_Pais():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo muertes  o deaths ',
@@ -1205,21 +1139,9 @@ def Muertes_Edad():
 
     st.image(image51, width=1200,use_column_width='auto')
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
         st.info("escoja Los campos que considere nescesarios para realizar la Tendencia de Vacunacion por pais")
         var = st.selectbox(
@@ -1228,7 +1150,7 @@ def Muertes_Edad():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo casos  o confirmited ',
@@ -1388,21 +1310,8 @@ def Tendencia_Vacunancion_Pais():
 
     st.image(image5, width=1200,use_column_width='auto')
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
         st.info("escoja Los campos que considere nescesarios para realizar la Tendencia de Vacunacion por pais")
         var = st.selectbox(
@@ -1411,7 +1320,7 @@ def Tendencia_Vacunancion_Pais():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo vacunacion  o vacunated ',
@@ -1560,21 +1469,9 @@ def Comparacion_Vacunacion_Pais():
 
     st.image(image12, width=1200,use_column_width='auto')
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
         st.info("escoja Los campos que considere nescesarios para realizar la Comparacion de Vacunacion entre 2 paises ")
         var = st.selectbox(
@@ -1583,7 +1480,7 @@ def Comparacion_Vacunacion_Pais():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo vacunacion  o vacunated ',
@@ -1753,21 +1650,9 @@ def Analisis_Comparativo_entre2_pais_contienente():
 
     st.image(image51, width=1200,use_column_width='auto')
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+
     if uploaded_file is not None:
     # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
-
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
 
         var = st.selectbox(
@@ -1776,7 +1661,7 @@ def Analisis_Comparativo_entre2_pais_contienente():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo vacunacion  o vacunated ',
@@ -2004,21 +1889,9 @@ def indice_progresion():
 
     st.image(image33, width=1200,use_column_width='auto')
 
-    uploaded_file = st.file_uploader("Para realizar    analisis el archivo  escoja un archivo de preferencia CSV")
+
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
         st.info("escoja Los campos que considere nescesarios para realizar la tasa de muertes por COVID-19")
         var = st.selectbox(
@@ -2027,7 +1900,7 @@ def indice_progresion():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         dias = st.number_input('Inserte numero de dias  para poder  ver la progresion de la pandemia')
         st.write('numero de dias ', dias)
@@ -2130,21 +2003,10 @@ def Tasa_Mortalidad_Pais():
 
     st.image(image33, width=1200,use_column_width='auto')
 
-    uploaded_file = st.file_uploader("Para realizar    analisis el archivo  escoja un archivo de preferencia CSV")
+
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
 
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
         st.info("escoja Los campos que considere nescesarios para realizar la tasa de muertes por COVID-19")
         var = st.selectbox(
@@ -2153,7 +2015,7 @@ def Tasa_Mortalidad_Pais():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo casos   ',
@@ -2161,7 +2023,7 @@ def Tasa_Mortalidad_Pais():
         opcion2=var1.upper()
         st.write(opcion2)
         dataframe[var1]=dataframe[var1].fillna(0)
-        st.write(dataframe[var1])
+        st.write(str(dataframe[var1]))
 
         var2 = st.selectbox(
         'Seleccione el campo muertes  o death ',
@@ -2283,21 +2145,8 @@ def prediccion_mundial():
 
     st.image(image113, width=1200,use_column_width='auto')
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
         st.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
         var = st.selectbox(
@@ -2307,7 +2156,7 @@ def prediccion_mundial():
         st.write(opcion1)
         dataframe[var]=dataframe[var].fillna(0)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo muertes  o deaths ',
@@ -2447,21 +2296,9 @@ def Comparacion_Infectados_Vacunados_Pais():
 
     st.image(image3, width=1200,use_column_width='auto')
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
     if uploaded_file is not None:
     # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
         st.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
 
@@ -2471,7 +2308,7 @@ def Comparacion_Infectados_Vacunados_Pais():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo casos  o confirmited ',
@@ -2583,21 +2420,8 @@ def Tendencia_Infectados_dia():
     st.image(image1121,width=1200,use_column_width='auto')
 
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
 
         st.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
@@ -2608,7 +2432,7 @@ def Tendencia_Infectados_dia():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo casos  o confirmited ',
@@ -2749,21 +2573,7 @@ def Comportamiento_Casos_Municipio():
     st.image(image44,width=1200,use_column_width='auto')
 
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
-
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
 
         st.info("escoja Los campos que considere nescesarios para obtener el porcentaje")
@@ -2775,7 +2585,7 @@ def Comportamiento_Casos_Municipio():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo municipio ',
@@ -2928,22 +2738,8 @@ def prediccion_ultimo_dia():
 
     st.image(image111,width=1200,use_column_width='auto')
 
-
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
         st.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
 
@@ -2953,7 +2749,7 @@ def prediccion_ultimo_dia():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo muertes  ',
@@ -3069,21 +2865,8 @@ def prediccion_casos_anio():
     st.image(image111,width=1200,use_column_width='auto')
 
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
-
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
         st.info("escoja Los campos que considere nescesarios para realizar la Prediccion")
 
@@ -3093,7 +2876,7 @@ def prediccion_casos_anio():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo casos  ',
@@ -3228,21 +3011,9 @@ def Porcentaje_Hombres_Covid():
     st.image(image44,width=1200,use_column_width='auto')
 
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
 
         st.info("escoja Los campos que considere nescesarios para obtener el porcentaje")
@@ -3254,7 +3025,7 @@ def Porcentaje_Hombres_Covid():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo hombres  o men ',
@@ -3384,21 +3155,10 @@ def porcentaje_muertes_p():
     st.image(image442,width=1200,use_column_width='auto')
 
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+
     if uploaded_file is not None:
     # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
 
         st.info("escoja Los campos que considere nescesarios para obtener el porcentaje")
@@ -3408,7 +3168,7 @@ def porcentaje_muertes_p():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+        st.write(str(dataframe[var]))
 
         var1 = st.selectbox(
         'Seleccione el campo muertes  o death ',
@@ -3489,21 +3249,9 @@ def Tasa_Comportamiento_Muertes_Covid():
 
     st.image(image122, width=1200,use_column_width='auto')
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
         st.info("escoja Los campos que considere nescesarios para realizar la Tasa de comportamiento  ")
         var = st.selectbox(
@@ -3512,21 +3260,21 @@ def Tasa_Comportamiento_Muertes_Covid():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+
         var1 = st.selectbox(
         'Seleccione el campo casos ',
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
         dataframe[var1]=dataframe[var1].fillna(0)
-        st.write(dataframe[var1])
+
         var2 = st.selectbox(
         'Seleccione el campo muertes  o death ',
         (dataframe.columns))
         opcion2=var2.upper()
         st.write(opcion2)
         dataframe[var2]=dataframe[var2].fillna(0)
-        st.write(dataframe[var2])
+
         st.info(" si escogio los campos correctamente  proceda a escoger el pais  analizar las regiones")
         continente = st.text_input('',placeholder='Escriba el contienente al que quiere realizar el analisis')
 
@@ -3618,21 +3366,9 @@ def Muertes_por_Region():
 
     st.image(image12, width=1200,use_column_width='auto')
 
-    uploaded_file = st.file_uploader("Para realizar el  archivo  escoja un archivo de preferencia CSV")
+
     if uploaded_file is not None:
-    # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
 
-
-    # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-
-    # To read file as string:
-        string_data = stringio.read()
-
-    # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(uploaded_file)
-        st.write(dataframe)
 
         st.info("escoja Los campos que considere nescesarios para realizar la Comparacion de Vacunacion entre 2 paises ")
         var = st.selectbox(
@@ -3641,21 +3377,21 @@ def Muertes_por_Region():
         opcion1=var.upper()
         st.write(opcion1)
 
-        st.write(dataframe[var])
+
         var1 = st.selectbox(
         'Seleccione el campo estado  o departamento ',
         (dataframe.columns))
         opcion2=var1.upper()
         st.write(opcion2)
         dataframe[var1]=dataframe[var1].fillna(0)
-        st.write(dataframe[var1])
+
         var2 = st.selectbox(
         'Seleccione el campo muertes  o death ',
         (dataframe.columns))
         opcion2=var2.upper()
         st.write(opcion2)
         dataframe[var2]=dataframe[var2].fillna(0)
-        st.write(dataframe[var2])
+
         st.info(" si escogio los campos correctamente  proceda a escoger el pais  analizar las regiones")
         pais = st.text_input('',placeholder='Escriba al pais al que quiere realizar el analisis')
 
