@@ -3433,8 +3433,8 @@ def porcentaje_muertes_p():
         st.markdown('# Usted escogio :'+pais)
 
         casos=casos_pais[var2].sum()
-        muertes=casos_pais[var1].sum()
-        porcentaje_hombres=muertes/casos
+        muertes=dataframe[var1].sum()
+        porcentaje_hombres=casos/muertes
         st.info('  Al analizar los datos se encuentro que por desgracia la cantidad de muertes en  asicende a la cantidad  de '+str(muertes) +' y  la cantidad de casos en '+pais+'asciende a la cantidad de '+str(casos) +'eso quiere decir  que el porcentaje de muertes  con respecto a la cantidad de casos en ' + pais+ ' es  de '+str(round(porcentaje_hombres*100,2))+'%')
 
         info_rep=' Al analizar los datos se encuentro que por desgracia la cantidad de muertes en  asicende a la cantidad  de '+str(muertes) +' y  la cantidad de casos en '+pais+'asciende a la cantidad de '+str(casos) +'eso quiere decir  que el porcentaje de muertes  con respecto a la cantidad de casos en ' + pais+ ' es  de '+str(round(porcentaje_hombres*100,2))+'%'
